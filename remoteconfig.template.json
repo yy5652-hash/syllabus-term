@@ -1,0 +1,10 @@
+{
+  "parameters": {
+    "escalation_enabled": { "defaultValue": { "value": "true" }, "valueType": "BOOLEAN",
+      "description": "Kill switch: when false, a section that fails its on-device check is shown with its issues instead of being sent to the cloud." },
+    "cloud_timeout_ms": { "defaultValue": { "value": "30000" }, "valueType": "NUMBER",
+      "description": "Give up on a cloud call after this many ms and keep the on-device answer, flagged." },
+    "stats_min_runs": { "defaultValue": { "value": "5" }, "valueType": "NUMBER",
+      "description": "Show the live counter on the homepage only once this many checks have run." }
+  }
+}

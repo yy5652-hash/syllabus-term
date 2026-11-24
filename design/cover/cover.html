@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Syllabus → Term cover</title>
+<style>
+  /* Palette A — from Hokusai, Under the Wave off Kanagawa (AIC 24645, CC0) */
+  :root {
+    --ink: #141d2a; --navy: #1b2a3e; --deep: #213249; --sea: #3d5a6e; --sky: #7f95ae;
+    --sand: #c5b499; --paper: #f7f0e1; --cream: #fdf4dc; --rust: #9e4427;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 800px; overflow: hidden; background: var(--ink); }
+  .cover { position: relative; width: 1200px; height: 800px; overflow: hidden;
+    background: radial-gradient(120% 90% at 85% 10%, #26395a 0%, var(--navy) 45%, var(--ink) 100%); }
+  svg.waves { position: absolute; inset: 0; }
+  .copy { position: absolute; left: 72px; top: 76px; width: 660px; color: var(--cream); }
+  .brand { display: flex; align-items: center; gap: 14px; font: 500 24px/1 Georgia, "Iowan Old Style", serif; letter-spacing: -.3px; }
+  .brand i { width: 40px; height: 40px; border-radius: 10px; background: var(--cream); display: grid; place-items: center; }
+  h1 { margin-top: 44px; font: 400 56px/1.08 Georgia, "Iowan Old Style", serif; letter-spacing: -1.6px; }
+  h1 em { font-style: italic; color: var(--sand); }
+  .sub { margin-top: 22px; font: 400 21px/1.45 -apple-system, "Helvetica Neue", sans-serif; color: #d9cfbb; max-width: 470px; }
+  .stats { position: absolute; left: 72px; bottom: 70px; display: flex; gap: 18px; }
+  .stat { background: #fdf4dc12; border: 1px solid #fdf4dc2e; backdrop-filter: blur(6px); border-radius: 18px; padding: 18px 24px 16px; color: var(--cream); }
+  .stat b { display: block; font: 400 54px/1 Georgia, serif; letter-spacing: -1.5px; }
+  .stat span { display: block; margin-top: 8px; font: 500 14.5px/1.35 -apple-system, "Helvetica Neue", sans-serif; color: #d9cfbb; max-width: 210px; }
+  .stat.hero { background: var(--cream); color: var(--navy); border-color: var(--cream); }
+  .stat.hero span { color: var(--sea); }
+  .shot { position: absolute; right: -60px; top: 120px; width: 600px; border-radius: 16px; overflow: hidden;
+    box-shadow: 0 40px 80px #00000066, 0 0 0 1px #fdf4dc22; transform: perspective(1600px) rotateY(-9deg) rotateX(3deg); transform-origin: left center; }
+  .shot { height: 300px; }
+  .shot img { display: block; width: 100%; margin-top: -78px; }
+  .check { position: absolute; right: 120px; top: 360px; width: 380px; border-radius: 14px; overflow: hidden;
+    box-shadow: 0 24px 50px #00000055; transform: perspective(1600px) rotateY(-9deg) rotateX(3deg); }
+  .check img { display: block; width: 100%; }
+  .foot { position: absolute; right: 48px; top: 64px; font: 500 13px/1 -apple-system, "Helvetica Neue", sans-serif; color: #b9b09c; letter-spacing: .4px; }
+  .foot b { color: var(--cream); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="cover">
+  <svg class="waves" viewBox="0 0 1200 800" aria-hidden="true"></svg>
+
+  <div class="copy">
+    <div class="brand"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1b2a3e" stroke-width="2"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5C4.7 20 4 19.3 4 18.5z"/><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H13v16h5.5c.8 0 1.5-.7 1.5-1.5z"/></svg></i>Syllabus → Term</div>
+    <h1>Your syllabus,<br>checked <em>on your device.</em></h1>
+    <p class="sub">Grades and deadlines read by on-device AI. Only the part that fails a check goes to the cloud.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat hero"><b>5.7%</b><span>of syllabus text sent to the cloud (cloud-only: 23%)</span></div>
+    <div class="stat"><b>87%</b><span>grading exact on 43 real syllabi (cloud-only: 85%)</span></div>
+  </div>
+
+  <div class="shot"><img src="ui-result.png" alt=""></div>
+  <div class="check"><img src="ui-checked.png" alt=""></div>
+
+  <div class="foot">Built with <b>Firebase AI Logic</b> hybrid inference · Gemini Nano + Gemini</div>
+</div>
+
+<script>
+// Generative sea: layered curling swells drawn from seeded noise (original line work,
+// inspired by woodblock prints; no image of the painting is used).
+const svg = document.querySelector('svg.waves');
+const NS = 'http://www.w3.org/2000/svg';
+let seed = 7;
+const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+const add = (tag, attrs) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); svg.appendChild(e); return e; };
+
+// faint sun / moon behind the screenshot
+add('circle', { cx: 1010, cy: 92, r: 54, fill: '#c5b499', opacity: .22 });
+
+const layers = 12;
+for (let i = 0; i < layers; i++) {
+  const t = i / (layers - 1);
+  const base = 560 + t * 260;
+  const amp = 26 + (1 - t) * 34;
+  const freq = 0.006 + rnd() * 0.004;
+  const phase = rnd() * Math.PI * 2;
+  let d = '';
+  for (let x = -20; x <= 1220; x += 8) {
+    const y = base + Math.sin(x * freq + phase) * amp + Math.sin(x * freq * 2.7 + phase * 1.7) * amp * 0.28;
+    d += (x === -20 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1);
+  }
+  const col = i % 5 === 0 ? '#c5b499' : (i % 2 ? '#7f95ae' : '#fdf4dc');
+  add('path', { d, fill: 'none', stroke: col, 'stroke-width': i % 5 === 0 ? 1.6 : 1, opacity: (0.06 + (1 - t) * 0.12).toFixed(3) });
+}
+
+// filled swells, back to front, each with a foam edge of small curled fingers
+const fills = ['#213249', '#1f3350', '#263d5c', '#2c4664', '#33506e'];
+for (let i = 0; i < fills.length; i++) {
+  const base = 640 + i * 34, amp = 30 - i * 3, freq = 0.0075 + i * 0.0009, ph = 1.3 + i * 1.9;
+  const ys = [];
+  let d = 'M-20 800';
+  for (let x = -20; x <= 1220; x += 6) {
+    const y = base + Math.sin(x * freq + ph) * amp + Math.sin(x * freq * 2.3 + ph) * amp * 0.35;
+    ys.push([x, y]); d += ` L${x} ${y.toFixed(1)}`;
+  }
+  d += ' L1220 800 Z';
+  add('path', { d, fill: fills[i], opacity: 0.92 });
+  // foam: tiny hooks on local crests
+  for (let j = 2; j < ys.length - 2; j++) {
+    const [x, y] = ys[j];
+    if (y < ys[j - 1][1] && y < ys[j + 1][1]) {
+      for (let k = -3; k <= 3; k++) {
+        const fx = x + k * 9, fy = y + Math.abs(k) * 2.2;
+        add('path', { d: `M${fx} ${fy} q 4 -7 9 -2`, fill: 'none', stroke: '#fdf4dc', 'stroke-width': 1.2, 'stroke-linecap': 'round', opacity: (0.55 - i * 0.07).toFixed(2) });
+      }
+    }
+  }
+  // inner flow lines that follow the swell
+  for (let l = 1; l <= 3; l++) {
+    let ld = '';
+    ys.forEach(([x, y], idx) => { ld += (idx ? 'L' : 'M') + x + ' ' + (y + l * 9).toFixed(1); });
+    add('path', { d: ld, fill: 'none', stroke: '#7f95ae', 'stroke-width': .8, opacity: .25 });
+  }
+}
+// spray
+for (let k = 0; k < 60; k++) {
+  const x = rnd() * 1200, y = 560 + rnd() * 80;
+  add('circle', { cx: x, cy: y, r: 0.7 + rnd() * 1.4, fill: '#fdf4dc', opacity: (0.1 + rnd() * 0.25).toFixed(2) });
+}
+</script>
+</body>
+</html>

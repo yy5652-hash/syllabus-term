@@ -1,0 +1,17 @@
+.env
+.env.*
+node_modules/
+.DS_Store
+*.log
+web/dist/
+eval/results/*.tmp
+ios/Secrets.xcconfig
+ios/SyllabusTerm/GoogleService-Info.plist
+ios/TermCore/.build/
+ios/build/
+*.xcuserstate
+xcuserdata/
+ios/build.log
+!.env.example
+
+eval/cases/

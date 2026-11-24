@@ -1,0 +1,6 @@
+{ "indexes": [
+  { "collectionGroup": "runs", "queryScope": "COLLECTION",
+    "fields": [ { "fieldPath": "charsSent", "order": "ASCENDING" }, { "fieldPath": "charsTotal", "order": "ASCENDING" } ] },
+  { "collectionGroup": "runs", "queryScope": "COLLECTION",
+    "fields": [ { "fieldPath": "sample", "order": "ASCENDING" }, { "fieldPath": "charsSent", "order": "ASCENDING" }, { "fieldPath": "charsTotal", "order": "ASCENDING" } ] }
+] }

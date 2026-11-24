@@ -1,0 +1,885 @@
+{
+  "mode": "cloud",
+  "tag": "v3",
+  "at": "2026-11-22T15:14:50.714Z",
+  "summary": {
+    "cases": 43,
+    "errors": 0,
+    "gradingExact": 0.5641025641025641,
+    "gradingRecall": 0.6723443223443224,
+    "datesExact": 0.5625,
+    "datesRecall": 0.9375,
+    "datesPrecision": 0.7483974358974359,
+    "sectionsOnDevice": 0,
+    "escalations": 0,
+    "cloudCharShare": 0.19014564762043937,
+    "medianMs": 5411
+  },
+  "rows": [
+    {
+      "id": "nu-econ201-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": {
+        "exact": true,
+        "precision": 1,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 3599,
+      "chars": 11999,
+      "ms": 4276
+    },
+    {
+      "id": "sjsu-econ1a-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 2217,
+      "chars": 11942,
+      "ms": 5411
+    },
+    {
+      "id": "nu-econ309-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": {
+        "exact": true,
+        "precision": 1,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 633,
+      "chars": 12000,
+      "ms": 4807
+    },
+    {
+      "id": "uiuc-mspe-econ500-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": {
+        "exact": true,
+        "precision": 1,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 592,
+      "chars": 10522,
+      "ms": 4880
+    },
+    {
+      "id": "baylor-csi3334-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 263,
+      "chars": 8483,
+      "ms": 3508
+    },
+    {
+      "id": "ucla-econ1-su2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightRecall": 0.3333333333333333,
+        "weightPrecision": 0.5
+      },
+      "dates": {
+        "exact": false,
+        "precision": 0,
+        "recall": 0
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 411,
+      "chars": 5326,
+      "ms": 5424
+    },
+    {
+      "id": "cu-econ2010-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightRecall": 1,
+        "weightPrecision": 0.6666666666666666
+      },
+      "dates": {
+        "exact": true,
+        "precision": 1,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "datesChecksOk": true,
+      "charsToCloud": 963,
+      "chars": 11943,
+      "ms": 7636
+    },
+    {
+      "id": "uva-econ3010-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": {
+        "exact": false,
+        "precision": 0.9,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 6581,
+      "chars": 11914,
+      "ms": 6459
+    },
+    {
+      "id": "sjsu-cs46b-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": {
+        "exact": false,
+        "precision": 0.3333333333333333,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": false,
+      "charsToCloud": 2161,
+      "chars": 10525,
+      "ms": 5431
+    },
+    {
+      "id": "dartmouth-math1-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": {
+        "exact": false,
+        "precision": 0.4,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 2356,
+      "chars": 9214,
+      "ms": 8556
+    },
+    {
+      "id": "wm-math112-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": {
+        "exact": false,
+        "precision": 0.3076923076923077,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 4243,
+      "chars": 9701,
+      "ms": 11653
+    },
+    {
+      "id": "nyu-csgy6923-s2026",
+      "mode": "cloud",
+      "grading": null,
+      "dates": {
+        "exact": true,
+        "precision": 1,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "datesChecksOk": true,
+      "charsToCloud": 5258,
+      "chars": 7595,
+      "ms": 6907
+    },
+    {
+      "id": "wm-csci416-s2026",
+      "mode": "cloud",
+      "grading": null,
+      "dates": {
+        "exact": true,
+        "precision": 1,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "datesChecksOk": true,
+      "charsToCloud": 2576,
+      "chars": 6821,
+      "ms": 7502
+    },
+    {
+      "id": "cmu-10701-s2026",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightRecall": 1,
+        "weightPrecision": 0.5
+      },
+      "dates": {
+        "exact": false,
+        "precision": 0.8666666666666667,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "datesChecksOk": true,
+      "charsToCloud": 5090,
+      "chars": 7865,
+      "ms": 7466
+    },
+    {
+      "id": "purdue-ma161-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": {
+        "exact": true,
+        "precision": 1,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 1104,
+      "chars": 11953,
+      "ms": 5597
+    },
+    {
+      "id": "unt-fina3770-s2026",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": {
+        "exact": true,
+        "precision": 1,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 1590,
+      "chars": 11965,
+      "ms": 5893
+    },
+    {
+      "id": "uiuc-fin500msp-s2026",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 1425,
+      "chars": 10512,
+      "ms": 5276
+    },
+    {
+      "id": "sjsu-engl1a-f2025",
+      "mode": "cloud",
+      "grading": null,
+      "dates": {
+        "exact": false,
+        "precision": 0.16666666666666666,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "datesChecksOk": false,
+      "charsToCloud": 2133,
+      "chars": 10517,
+      "ms": 6217
+    },
+    {
+      "id": "buffalo-cse250-s2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 1680,
+      "chars": 11929,
+      "ms": 4141
+    },
+    {
+      "id": "rpi-csci1200-f2024",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 237,
+      "chars": 5560,
+      "ms": 4792
+    },
+    {
+      "id": "ocw-14-01-f2023",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 578,
+      "chars": 4172,
+      "ms": 4070
+    },
+    {
+      "id": "ocw-14-13-s2020",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 1627,
+      "chars": 6614,
+      "ms": 5874
+    },
+    {
+      "id": "ocw-14-15j-s2018",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightRecall": 0,
+        "weightPrecision": 0
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "datesChecksOk": true,
+      "charsToCloud": 29,
+      "chars": 4447,
+      "ms": 8625
+    },
+    {
+      "id": "ocw-14-381-f2018",
+      "mode": "cloud",
+      "grading": null,
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "datesChecksOk": true,
+      "charsToCloud": 684,
+      "chars": 2527,
+      "ms": 4426
+    },
+    {
+      "id": "ocw-15-071-s2017",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightRecall": 0,
+        "weightPrecision": 0
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "datesChecksOk": true,
+      "charsToCloud": 21,
+      "chars": 3358,
+      "ms": 7075
+    },
+    {
+      "id": "ocw-18-04-s2018",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 60,
+      "chars": 2773,
+      "ms": 4423
+    },
+    {
+      "id": "ocw-18-404j-f2020",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 686,
+      "chars": 4223,
+      "ms": 4540
+    },
+    {
+      "id": "ocw-18-600-f2019",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 70,
+      "chars": 1614,
+      "ms": 5374
+    },
+    {
+      "id": "ocw-6-006-s2020",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightRecall": 0,
+        "weightPrecision": 0
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "datesChecksOk": true,
+      "charsToCloud": 44,
+      "chars": 2536,
+      "ms": 5797
+    },
+    {
+      "id": "ocw-7-016-f2018",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightRecall": 0.25,
+        "weightPrecision": 1
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "datesChecksOk": true,
+      "charsToCloud": 309,
+      "chars": 2232,
+      "ms": 5546
+    },
+    {
+      "id": "ocw-21h-102-s2018",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightRecall": 0,
+        "weightPrecision": 0
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "datesChecksOk": true,
+      "charsToCloud": 37,
+      "chars": 3755,
+      "ms": 5400
+    },
+    {
+      "id": "ocw-21w-031-s2017",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightRecall": 0.6666666666666666,
+        "weightPrecision": 0.3333333333333333
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 262,
+      "chars": 3261,
+      "ms": 5121
+    },
+    {
+      "id": "ocw-21l-004-s2018",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightRecall": 0,
+        "weightPrecision": 0
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "datesChecksOk": true,
+      "charsToCloud": 21,
+      "chars": 3516,
+      "ms": 6832
+    },
+    {
+      "id": "ocw-24-00-f2019",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightRecall": 0,
+        "weightPrecision": 0
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "datesChecksOk": true,
+      "charsToCloud": 53,
+      "chars": 3393,
+      "ms": 4562
+    },
+    {
+      "id": "ocw-17-20-f2020",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightRecall": 0,
+        "weightPrecision": 0
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "datesChecksOk": true,
+      "charsToCloud": 65,
+      "chars": 5102,
+      "ms": 3809
+    },
+    {
+      "id": "ocw-3-091-f2018",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightRecall": 0.4,
+        "weightPrecision": 0.6666666666666666
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "datesChecksOk": true,
+      "charsToCloud": 209,
+      "chars": 5531,
+      "ms": 5184
+    },
+    {
+      "id": "ocw-9-13-s2019",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 442,
+      "chars": 3202,
+      "ms": 4233
+    },
+    {
+      "id": "ocw-6-172-f2018",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightRecall": 0,
+        "weightPrecision": 0
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "datesChecksOk": true,
+      "charsToCloud": 52,
+      "chars": 2010,
+      "ms": 4445
+    },
+    {
+      "id": "ocw-4-601-f2018",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 755,
+      "chars": 5763,
+      "ms": 4817
+    },
+    {
+      "id": "ocw-21g-502-s2020",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightRecall": 0,
+        "weightPrecision": 0
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "datesChecksOk": true,
+      "charsToCloud": 472,
+      "chars": 3808,
+      "ms": 5842
+    },
+    {
+      "id": "ocw-11-382-s2021",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "datesChecksOk": true,
+      "charsToCloud": 464,
+      "chars": 8542,
+      "ms": 5849
+    },
+    {
+      "id": "ocw-21a-01-f2019",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightRecall": 0,
+        "weightPrecision": 0
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "datesChecksOk": true,
+      "charsToCloud": 37,
+      "chars": 3486,
+      "ms": 5059
+    },
+    {
+      "id": "grinnell-hist295-f2024",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightRecall": 0.5714285714285714,
+        "weightPrecision": 1
+      },
+      "dates": {
+        "exact": true,
+        "precision": 1,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "datesChecksOk": true,
+      "charsToCloud": 2560,
+      "chars": 3255,
+      "ms": 5721
+    }
+  ]
+}

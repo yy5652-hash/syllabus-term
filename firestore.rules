@@ -1,0 +1,29 @@
+rules_version = '2';
+// Only anonymous, text-free run statistics are stored: no syllabus text, no names, no grades.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /runs/{runId} {
+      // Public numbers behind the live counter on the homepage.
+      allow read: if true;
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly(['uid', 'at', 'charsTotal', 'charsSent', 'gradingSource', 'datesSource',
+             'gradingOk', 'datesOk', 'escalated', 'repaired', 'ms', 'sample', 'version'])
+        && request.resource.data.keys().hasAll(['uid', 'at', 'charsTotal', 'charsSent', 'gradingSource', 'datesSource',
+             'gradingOk', 'datesOk', 'escalated', 'repaired', 'ms', 'sample', 'version'])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.at == request.time
+        && request.resource.data.charsTotal is int && request.resource.data.charsTotal > 0 && request.resource.data.charsTotal <= 2000000
+        && request.resource.data.charsSent is int && request.resource.data.charsSent >= 0 && request.resource.data.charsSent <= request.resource.data.charsTotal
+        && request.resource.data.gradingSource in ['on_device', 'in_cloud']
+        && request.resource.data.datesSource in ['on_device', 'in_cloud']
+        && request.resource.data.gradingOk is bool && request.resource.data.datesOk is bool
+        && request.resource.data.escalated is int && request.resource.data.escalated >= 0 && request.resource.data.escalated <= 2
+        && request.resource.data.repaired is int && request.resource.data.repaired >= 0 && request.resource.data.repaired <= 100
+        && request.resource.data.ms is int && request.resource.data.ms >= 0 && request.resource.data.ms <= 600000
+        && request.resource.data.sample is bool
+        && request.resource.data.version is string && request.resource.data.version.size() <= 20;
+      allow update, delete: if false;
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

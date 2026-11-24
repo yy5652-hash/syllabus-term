@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Palette options</title>
+<style>
+body{margin:0;font:15px/1.5 -apple-system,"Inter",system-ui,sans-serif;background:#e9e9e9;color:#222}
+.wrap{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;padding:24px}
+.opt h2{margin:0 0 4px;font-size:18px}.opt small{color:#555}
+.sw{display:flex;gap:4px;margin:8px 0}.sw div{flex:1;height:36px;border-radius:6px;font-size:10px;display:flex;align-items:end;padding:2px 4px;color:#fff;text-shadow:0 0 2px #000}
+.mock{border-radius:14px;overflow:hidden;background:var(--bg);color:var(--text);margin-top:8px;box-shadow:0 2px 10px #0002}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;font-weight:600}
+.nav span:last-child{font-weight:500;font-size:13px;color:var(--muted)}
+.hero{padding:18px 18px 8px}.hero h1{font:600 26px/1.15 Georgia,serif;margin:0 0 8px}
+.hero p{margin:0 0 14px;color:var(--muted);font-size:14px}
+.btn{display:inline-block;background:var(--primary);color:var(--onprimary);padding:9px 14px;border-radius:9px;font-weight:600;font-size:14px}
+.card{background:var(--card);margin:14px 18px 18px;border-radius:12px;padding:12px 14px;box-shadow:0 1px 3px #0001}
+.row{display:flex;gap:8px;align-items:center;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border:0}
+.badge{white-space:nowrap;font-size:11px;padding:2px 8px;border-radius:99px;font-weight:600}
+.dev{background:var(--ok);color:#fff}.cloud{background:var(--accent);color:var(--onaccent)}
+.bar{height:8px;border-radius:4px;background:var(--line);margin:8px 0 2px;overflow:hidden;display:flex}
+.bar i{display:block}
+.pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.cr{font-size:11px;color:#444;margin-top:6px}
+</style></head><body>
+<div class="wrap" id="w"></div>
+<script>
+const P=[
+ {key:'A',name:'Great Wave',src:'Katsushika Hokusai, Under the Wave off Kanagawa, 1830/33 — Art Institute of Chicago 24645, CC0',
+  light:{bg:'#f7f0e1',card:'#fffaf0',text:'#1b2a3e',muted:'#4f5b66',primary:'#213249',onprimary:'#fdf4dc',accent:'#c5b499',onaccent:'#1b2a3e',ok:'#3d5a6e',line:'#e3d5ba'},
+  dark:{bg:'#141d2a',card:'#1f2c3e',text:'#f3ead6',muted:'#b9b09c',primary:'#dac6a6',onprimary:'#141d2a',accent:'#7f95ae',onaccent:'#141d2a',ok:'#5d8aa8',line:'#33435a'}},
+ {key:'B',name:'The Bedroom',src:'Vincent van Gogh, The Bedroom, 1889 — Art Institute of Chicago 28560, CC0',
+  light:{bg:'#f5f2e7',card:'#fffdf6',text:'#2a2a22',muted:'#5c5a4c',primary:'#3f5f82',onprimary:'#fffdf6',accent:'#8a6206',onaccent:'#fffdf6',ok:'#3f5947',line:'#e2dcc5'},
+  dark:{bg:'#1b1d19',card:'#262a24',text:'#f1ecd9',muted:'#b8b39b',primary:'#8aa6c4',onprimary:'#1b1d19',accent:'#d9a43a',onaccent:'#1b1d19',ok:'#7fa184',line:'#3a3f36'}},
+ {key:'C',name:'Grande Jatte',src:'Georges Seurat, A Sunday on La Grande Jatte — 1884, 1884–86 — Art Institute of Chicago 27992, CC0',
+  light:{bg:'#f3f1ea',card:'#fcfbf7',text:'#262a27',muted:'#585d58',primary:'#48584d',onprimary:'#fcfbf7',accent:'#6f6a48',onaccent:'#ffffff',ok:'#536356',line:'#dcd8cb'},
+  dark:{bg:'#1a1d1b',card:'#252a26',text:'#eeebe1',muted:'#b0ab9a',primary:'#a7b9a5',onprimary:'#1a1d1b',accent:'#c2b98a',onaccent:'#1a1d1b',ok:'#8ea48f',line:'#363c37'}}
+];
+function L(h){const c=[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255).map(v=>v<=.03928?v/12.92:((v+.055)/1.055)**2.4);return .2126*c[0]+.7152*c[1]+.0722*c[2]}
+function CR(a,b){const x=L(a),y=L(b);return ((Math.max(x,y)+.05)/(Math.min(x,y)+.05)).toFixed(1)}
+function mock(t,label){return `<div class="mock" style="${Object.entries(t).map(([k,v])=>`--${k}:${v}`).join(';')}">
+<div class="nav"><span>Syllabus → Term</span><span>${label}</span></div>
+<div class="hero"><h1>Your syllabus, checked and on your calendar.</h1><p>Reads on your device first. Only the part that fails a check goes to the cloud.</p><span class="btn">Open a syllabus</span></div>
+<div class="card"><div class="row"><b>ECON-UA 2 · Grading</b><span class="badge dev">on device ✓</span></div>
+<div class="bar"><i style="width:30%;background:var(--primary)"></i><i style="width:30%;background:var(--accent)"></i><i style="width:25%;background:var(--ok)"></i><i style="width:15%;background:var(--muted)"></i></div>
+<div class="row"><span>Midterm 30% · Final 30% · Problem sets 25% · Participation 15%</span><span>= 100%</span></div>
+<div class="row"><span>Exam dates (2)</span><span class="badge cloud">1 section checked in cloud</span></div></div></div>
+<div class="cr">text/bg ${CR(t.text,t.bg)} · muted/bg ${CR(t.muted,t.bg)} · button ${CR(t.onprimary,t.primary)} · accent badge ${CR(t.onaccent,t.accent)}</div>`}
+document.getElementById('w').innerHTML=P.map(p=>`<div class="opt"><h2>${p.key} · ${p.name}</h2><small>${p.src}</small>
+<div class="sw">${['bg','card','text','primary','accent','ok'].map(k=>`<div style="background:${p.light[k]}">${k}</div>`).join('')}</div>
+<div class="pair"><div>${mock(p.light,'Light')}</div><div>${mock(p.dark,'Dark')}</div></div></div>`).join('');
+</script></body></html>
