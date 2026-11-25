@@ -1,0 +1,1302 @@
+{
+  "mode": "cloud",
+  "tag": "v8",
+  "at": "2026-11-25T18:38:08.097Z",
+  "summary": {
+    "cases": 12,
+    "errors": 0,
+    "gradingCases": 12,
+    "datesCases": 11,
+    "gradingExact": 0.75,
+    "gradingWeightsOnly": 0.75,
+    "gradingRecall": 0.7708333333333334,
+    "datesExact": 0.6363636363636364,
+    "datesRecall": 0.8333333333333333,
+    "datesPrecision": 0.8379446640316206,
+    "datesPairRecall": 0.8333333333333333,
+    "datesPairPrecision": 0.837121212121212,
+    "datesChecked": 0.9166666666666666,
+    "sectionsOnDevice": 0,
+    "escalations": 0,
+    "cloudCharShare": 0.10985607812901568,
+    "medianMs": 7526
+  },
+  "rows": [
+    {
+      "id": "sc-stat714-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightsOnlyExact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": {
+        "pairRecall": 1,
+        "pairPrecision": 1,
+        "exact": true,
+        "precision": 1,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "gradingStatus": "checked",
+      "datesStatus": "checked",
+      "datesChecksOk": true,
+      "charsToCloud": 811,
+      "chars": 3394,
+      "ms": 5206,
+      "gradingFirstIssues": [],
+      "datesFirstIssues": [],
+      "gradingValue": {
+        "totalPoints": 100,
+        "components": [
+          {
+            "name": "First midterm exam",
+            "weight": 25,
+            "kind": "exam"
+          },
+          {
+            "name": "Second midterm exam",
+            "weight": 25,
+            "kind": "exam"
+          },
+          {
+            "name": "Final Exam",
+            "weight": 30,
+            "kind": "exam"
+          },
+          {
+            "name": "Homework",
+            "weight": 10,
+            "kind": "assignment"
+          },
+          {
+            "name": "Quizzes",
+            "weight": 10,
+            "kind": "quiz"
+          }
+        ]
+      },
+      "datesValue": {
+        "items": [
+          {
+            "label": "First midterm exam",
+            "date": "2025-10-14",
+            "kind": "exam"
+          },
+          {
+            "label": "Second midterm exam",
+            "date": "2025-11-13",
+            "kind": "exam"
+          },
+          {
+            "label": "Final Exam",
+            "date": "2025-12-11",
+            "kind": "exam"
+          }
+        ]
+      },
+      "removed": [],
+      "termSource": "inferred"
+    },
+    {
+      "id": "gsu-math2641-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightsOnlyExact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": {
+        "pairRecall": 1,
+        "pairPrecision": 1,
+        "exact": true,
+        "precision": 1,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "gradingStatus": "failed",
+      "datesStatus": "checked",
+      "datesChecksOk": true,
+      "charsToCloud": 2828,
+      "chars": 7766,
+      "ms": 10063,
+      "gradingFirstIssues": [
+        "weight-not-bound",
+        "weight-not-bound",
+        "weight-not-bound"
+      ],
+      "datesFirstIssues": [],
+      "gradingValue": {
+        "components": [
+          {
+            "name": "Test 1",
+            "weight": 15,
+            "kind": "exam"
+          },
+          {
+            "name": "Test 2",
+            "weight": 15,
+            "kind": "exam"
+          },
+          {
+            "name": "Test 3",
+            "weight": 15,
+            "kind": "exam"
+          },
+          {
+            "name": "Online Homeworks",
+            "weight": 15,
+            "kind": "assignment"
+          },
+          {
+            "name": "Online Quizzes",
+            "weight": 15,
+            "kind": "quiz"
+          },
+          {
+            "name": "Final Exam",
+            "weight": 25,
+            "kind": "exam"
+          }
+        ]
+      },
+      "datesValue": {
+        "items": [
+          {
+            "label": "Final Exam",
+            "date": "2025-12-10",
+            "kind": "exam"
+          }
+        ]
+      },
+      "removed": [],
+      "termSource": "label"
+    },
+    {
+      "id": "uiowa-stat2010-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightsOnlyExact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": {
+        "pairRecall": 1,
+        "pairPrecision": 1,
+        "exact": true,
+        "precision": 1,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "gradingStatus": "failed",
+      "datesStatus": "checked",
+      "datesChecksOk": true,
+      "charsToCloud": 336,
+      "chars": 20347,
+      "ms": 5828,
+      "gradingFirstIssues": [
+        "weight-not-bound",
+        "weight-not-bound"
+      ],
+      "datesFirstIssues": [],
+      "gradingValue": {
+        "components": [
+          {
+            "name": "Homework",
+            "weight": 18,
+            "kind": "assignment"
+          },
+          {
+            "name": "Quizzes",
+            "weight": 4,
+            "kind": "quiz"
+          },
+          {
+            "name": "Midterm 1",
+            "weight": 24,
+            "kind": "exam"
+          },
+          {
+            "name": "Midterm 2",
+            "weight": 24,
+            "kind": "exam"
+          },
+          {
+            "name": "Final exam",
+            "weight": 30,
+            "kind": "exam"
+          }
+        ]
+      },
+      "datesValue": {
+        "items": [
+          {
+            "label": "Midterm 1",
+            "date": "2025-10-06",
+            "kind": "exam"
+          },
+          {
+            "label": "Midterm 2",
+            "date": "2025-11-10",
+            "kind": "exam"
+          }
+        ]
+      },
+      "removed": [],
+      "termSource": "inferred"
+    },
+    {
+      "id": "purdue-hist104-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightsOnlyExact": false,
+        "weightRecall": 0,
+        "weightPrecision": 0
+      },
+      "dates": {
+        "pairRecall": 1,
+        "pairPrecision": 1,
+        "exact": true,
+        "precision": 1,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "gradingStatus": "failed",
+      "datesStatus": "checked",
+      "datesChecksOk": true,
+      "charsToCloud": 1673,
+      "chars": 7542,
+      "ms": 5425,
+      "gradingFirstIssues": [
+        "empty"
+      ],
+      "datesFirstIssues": [],
+      "gradingValue": {
+        "components": []
+      },
+      "datesValue": {
+        "items": [
+          {
+            "label": "MIDTERM DUE",
+            "date": "2025-10-26",
+            "kind": "exam"
+          },
+          {
+            "label": "FINAL DUE",
+            "date": "2025-12-15",
+            "kind": "exam"
+          }
+        ]
+      },
+      "removed": [],
+      "termSource": "inferred"
+    },
+    {
+      "id": "tamusa-hist1301-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightsOnlyExact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": {
+        "pairRecall": 1,
+        "pairPrecision": 1,
+        "exact": true,
+        "precision": 1,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "gradingStatus": "checked",
+      "datesStatus": "checked",
+      "datesChecksOk": true,
+      "charsToCloud": 2251,
+      "chars": 22143,
+      "ms": 5286,
+      "gradingFirstIssues": [],
+      "datesFirstIssues": [],
+      "gradingValue": {
+        "totalPoints": 1000,
+        "components": [
+          {
+            "name": "Midterm",
+            "points": 200,
+            "kind": "exam",
+            "weight": 20
+          },
+          {
+            "name": "final exam",
+            "points": 200,
+            "kind": "exam",
+            "weight": 20
+          },
+          {
+            "name": "short essay",
+            "points": 100,
+            "kind": "assignment",
+            "weight": 10
+          },
+          {
+            "name": "longer essay",
+            "points": 200,
+            "kind": "assignment",
+            "weight": 20
+          },
+          {
+            "name": "Quizzes",
+            "points": 150,
+            "kind": "quiz",
+            "weight": 15
+          },
+          {
+            "name": "Short Answer Discussion",
+            "points": 150,
+            "kind": "participation",
+            "weight": 15
+          }
+        ]
+      },
+      "datesValue": {
+        "items": [
+          {
+            "label": "Main Idea Paper",
+            "date": "2025-09-28",
+            "kind": "deadline"
+          },
+          {
+            "label": "Response paper",
+            "date": "2025-11-09",
+            "kind": "deadline"
+          }
+        ]
+      },
+      "removed": [],
+      "termSource": "inferred"
+    },
+    {
+      "id": "tamusa-biol1307-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightsOnlyExact": false,
+        "weightRecall": 0,
+        "weightPrecision": 0
+      },
+      "dates": {
+        "pairRecall": 0,
+        "pairPrecision": 0,
+        "exact": false,
+        "precision": 0,
+        "recall": 0
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "gradingStatus": "checked",
+      "datesStatus": "checked",
+      "datesChecksOk": true,
+      "charsToCloud": 2810,
+      "chars": 45183,
+      "ms": 14595,
+      "gradingFirstIssues": [],
+      "datesFirstIssues": [],
+      "gradingValue": {
+        "totalPoints": 950,
+        "components": [
+          {
+            "name": "TOTAL EXAM & PORTFOLIO POINTS",
+            "weight": 63,
+            "kind": "exam"
+          },
+          {
+            "name": "TOTAL QUIZ POINTS",
+            "weight": 13,
+            "kind": "quiz"
+          },
+          {
+            "name": "TOTAL HOMEWORK POINTS",
+            "weight": 17,
+            "kind": "assignment"
+          },
+          {
+            "name": "TOTAL ENVIRONMENT & YOU POINTS",
+            "weight": 7,
+            "kind": "other"
+          }
+        ]
+      },
+      "datesValue": {
+        "items": [
+          {
+            "label": "Final exams",
+            "date": "2025-12-08",
+            "kind": "exam"
+          },
+          {
+            "label": "Final exams",
+            "date": "2025-12-06",
+            "kind": "exam"
+          }
+        ]
+      },
+      "removed": [],
+      "termSource": "inferred"
+    },
+    {
+      "id": "gatech-math1553-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightsOnlyExact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": {
+        "pairRecall": 0.5,
+        "pairPrecision": 1,
+        "exact": false,
+        "precision": 1,
+        "recall": 0.5
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "gradingStatus": "checked",
+      "datesStatus": "checked",
+      "datesChecksOk": true,
+      "charsToCloud": 3534,
+      "chars": 29007,
+      "ms": 7779,
+      "gradingFirstIssues": [],
+      "datesFirstIssues": [
+        "date-not-bound:Cannot link \"Exam 2\" to 2025-10-15 in the schedule.",
+        "date-not-bound:Cannot link \"Exam 3\" to 2025-11-12 in the schedule."
+      ],
+      "gradingValue": {
+        "totalPoints": 100,
+        "components": [
+          {
+            "name": "Studio participation",
+            "weight": 5,
+            "kind": "participation"
+          },
+          {
+            "name": "Homework",
+            "weight": 10,
+            "kind": "assignment"
+          },
+          {
+            "name": "Quizzes",
+            "weight": 15,
+            "kind": "quiz"
+          },
+          {
+            "name": "Midterm 1",
+            "weight": 15,
+            "kind": "exam"
+          },
+          {
+            "name": "Midterm 2",
+            "weight": 15,
+            "kind": "exam"
+          },
+          {
+            "name": "Midterm 3",
+            "weight": 15,
+            "kind": "exam"
+          },
+          {
+            "name": "Final exam",
+            "weight": 25,
+            "kind": "exam"
+          }
+        ]
+      },
+      "datesValue": {
+        "items": [
+          {
+            "label": "Exam 1",
+            "date": "2025-09-17",
+            "kind": "exam"
+          },
+          {
+            "label": "Cumulative in-person Final exam",
+            "date": "2025-12-09",
+            "kind": "exam"
+          }
+        ]
+      },
+      "removed": [
+        {
+          "item": {
+            "label": "Exam 2",
+            "date": "2025-10-15",
+            "kind": "exam"
+          },
+          "reason": "date-not-bound"
+        },
+        {
+          "item": {
+            "label": "Exam 3",
+            "date": "2025-11-12",
+            "kind": "exam"
+          },
+          "reason": "date-not-bound"
+        }
+      ],
+      "termSource": "inferred"
+    },
+    {
+      "id": "nd-econ30020-s2026",
+      "mode": "cloud",
+      "grading": {
+        "exact": false,
+        "weightsOnlyExact": false,
+        "weightRecall": 0.25,
+        "weightPrecision": 0.07692307692307693
+      },
+      "dates": {
+        "pairRecall": 1,
+        "pairPrecision": 1,
+        "exact": true,
+        "precision": 1,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "gradingStatus": "failed",
+      "datesStatus": "checked",
+      "datesChecksOk": true,
+      "charsToCloud": 4038,
+      "chars": 15293,
+      "ms": 7526,
+      "gradingFirstIssues": [
+        "weight-not-in-text",
+        "weight-not-bound",
+        "weight-not-in-text",
+        "weight-not-bound",
+        "weight-not-in-text",
+        "weight-not-bound",
+        "weight-not-in-text",
+        "weight-not-bound",
+        "weight-not-in-text",
+        "weight-not-bound",
+        "weight-not-in-text",
+        "weight-not-bound",
+        "weight-not-in-text",
+        "weight-not-bound",
+        "weight-not-in-text",
+        "weight-not-bound",
+        "weight-not-in-text",
+        "weight-not-bound",
+        "weight-not-in-text",
+        "weight-not-bound"
+      ],
+      "datesFirstIssues": [],
+      "gradingValue": {
+        "totalPoints": 100,
+        "components": [
+          {
+            "name": "Midterm 1",
+            "weight": 20,
+            "kind": "exam"
+          },
+          {
+            "name": "Midterm 2",
+            "weight": 20,
+            "kind": "exam"
+          },
+          {
+            "name": "Final Exam",
+            "weight": 30,
+            "kind": "exam"
+          },
+          {
+            "name": "Quiz 1",
+            "weight": 3,
+            "kind": "quiz"
+          },
+          {
+            "name": "Quiz 2",
+            "weight": 3,
+            "kind": "quiz"
+          },
+          {
+            "name": "Quiz 3",
+            "weight": 3,
+            "kind": "quiz"
+          },
+          {
+            "name": "Quiz 4",
+            "weight": 3,
+            "kind": "quiz"
+          },
+          {
+            "name": "Quiz 5",
+            "weight": 3,
+            "kind": "quiz"
+          },
+          {
+            "name": "Problem Set 1",
+            "weight": 3,
+            "kind": "assignment"
+          },
+          {
+            "name": "Problem Set 2",
+            "weight": 3,
+            "kind": "assignment"
+          },
+          {
+            "name": "Problem Set 3",
+            "weight": 3,
+            "kind": "assignment"
+          },
+          {
+            "name": "Problem Set 4",
+            "weight": 3,
+            "kind": "assignment"
+          },
+          {
+            "name": "Problem Set 5",
+            "weight": 3,
+            "kind": "assignment"
+          }
+        ]
+      },
+      "datesValue": {
+        "items": [
+          {
+            "label": "Quiz 1",
+            "date": "2026-01-27",
+            "kind": "quiz"
+          },
+          {
+            "label": "Problem Set 1",
+            "date": "2026-01-29",
+            "kind": "deadline"
+          },
+          {
+            "label": "Midterm 1",
+            "date": "2026-02-03",
+            "kind": "exam"
+          },
+          {
+            "label": "Quiz 2",
+            "date": "2026-02-17",
+            "kind": "quiz"
+          },
+          {
+            "label": "Problem Set 2",
+            "date": "2026-02-17",
+            "kind": "deadline"
+          },
+          {
+            "label": "Quiz 3",
+            "date": "2026-02-26",
+            "kind": "quiz"
+          },
+          {
+            "label": "Problem Set 3",
+            "date": "2026-03-03",
+            "kind": "deadline"
+          },
+          {
+            "label": "Midterm 2",
+            "date": "2026-03-05",
+            "kind": "exam"
+          },
+          {
+            "label": "Quiz 4",
+            "date": "2026-03-26",
+            "kind": "quiz"
+          },
+          {
+            "label": "Problem Set 4",
+            "date": "2026-03-31",
+            "kind": "deadline"
+          },
+          {
+            "label": "Midterm 3",
+            "date": "2026-04-02",
+            "kind": "exam"
+          },
+          {
+            "label": "Quiz 5",
+            "date": "2026-04-21",
+            "kind": "quiz"
+          },
+          {
+            "label": "Problem Set 5",
+            "date": "2026-04-28",
+            "kind": "deadline"
+          },
+          {
+            "label": "Final Exam",
+            "date": "2026-05-06",
+            "kind": "exam"
+          }
+        ]
+      },
+      "removed": [],
+      "termSource": "inferred"
+    },
+    {
+      "id": "uncg-acc202-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightsOnlyExact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": {
+        "pairRecall": 1,
+        "pairPrecision": 0.20833333333333334,
+        "exact": false,
+        "precision": 0.21739130434782608,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "gradingStatus": "checked",
+      "datesStatus": "checked",
+      "datesChecksOk": true,
+      "charsToCloud": 3931,
+      "chars": 30457,
+      "ms": 11813,
+      "gradingFirstIssues": [],
+      "datesFirstIssues": [
+        "date-not-bound:Cannot link \"CH 4 Quiz\" to 2025-09-15 in the schedule.",
+        "date-not-bound:Cannot link \"CH 8 Quiz\" to 2025-10-13 in the schedule.",
+        "date-not-bound:Cannot link \"CH 11 Quiz\" to 2025-11-10 in the schedule.",
+        "date-not-bound:Cannot link \"CH 12 Quiz\" to 2025-12-01 in the schedule."
+      ],
+      "gradingValue": {
+        "totalPoints": 100,
+        "components": [
+          {
+            "name": "Online Quizzes and in-class Learning",
+            "weight": 10,
+            "kind": "quiz"
+          },
+          {
+            "name": "Chapter Homework",
+            "weight": 15,
+            "kind": "assignment"
+          },
+          {
+            "name": "AI Assignment",
+            "weight": 5,
+            "kind": "assignment"
+          },
+          {
+            "name": "Spreadsheet Assignment",
+            "weight": 10,
+            "kind": "assignment"
+          },
+          {
+            "name": "Regular Exams",
+            "weight": 35,
+            "kind": "exam"
+          },
+          {
+            "name": "Final Examination",
+            "weight": 25,
+            "kind": "exam"
+          }
+        ]
+      },
+      "datesValue": {
+        "items": [
+          {
+            "label": "Ch 2 Pre-HW",
+            "date": "2025-08-25",
+            "kind": "deadline"
+          },
+          {
+            "label": "Chapter 1 Quiz",
+            "date": "2025-08-27",
+            "kind": "quiz"
+          },
+          {
+            "label": "CH 2 Post-HW",
+            "date": "2025-09-01",
+            "kind": "deadline"
+          },
+          {
+            "label": "CH 2 Quiz",
+            "date": "2025-09-01",
+            "kind": "quiz"
+          },
+          {
+            "label": "CH 3 Pre-HW",
+            "date": "2025-09-03",
+            "kind": "deadline"
+          },
+          {
+            "label": "CH 3 Post-HW",
+            "date": "2025-09-08",
+            "kind": "deadline"
+          },
+          {
+            "label": "Chapter 4 Post-HW",
+            "date": "2025-09-15",
+            "kind": "deadline"
+          },
+          {
+            "label": "Exam 1 (online)",
+            "date": "2025-09-17",
+            "kind": "exam"
+          },
+          {
+            "label": "Chapter 6 Pre-HW",
+            "date": "2025-09-22",
+            "kind": "deadline"
+          },
+          {
+            "label": "CH 6 Post-HW",
+            "date": "2025-09-29",
+            "kind": "deadline"
+          },
+          {
+            "label": "Ch 7 Post-HW",
+            "date": "2025-10-06",
+            "kind": "deadline"
+          },
+          {
+            "label": "Chapter 8 Post-HW",
+            "date": "2025-10-13",
+            "kind": "deadline"
+          },
+          {
+            "label": "Exam 2 (online)",
+            "date": "2025-10-15",
+            "kind": "exam"
+          },
+          {
+            "label": "Chapter 9 Pre-HW",
+            "date": "2025-10-20",
+            "kind": "deadline"
+          },
+          {
+            "label": "Ch 9 Post-HW",
+            "date": "2025-10-27",
+            "kind": "deadline"
+          },
+          {
+            "label": "AI Assignment Due",
+            "date": "2025-10-29",
+            "kind": "deadline"
+          },
+          {
+            "label": "Ch 10 Post-HW",
+            "date": "2025-11-03",
+            "kind": "deadline"
+          },
+          {
+            "label": "CH 11 Post-HW",
+            "date": "2025-11-10",
+            "kind": "deadline"
+          },
+          {
+            "label": "Exam 3 (online)",
+            "date": "2025-11-12",
+            "kind": "exam"
+          },
+          {
+            "label": "CH 12 Pre-HW",
+            "date": "2025-11-17",
+            "kind": "deadline"
+          },
+          {
+            "label": "Spreadsheet Assignment Due",
+            "date": "2025-11-19",
+            "kind": "deadline"
+          },
+          {
+            "label": "Chapter 12 Post-HW",
+            "date": "2025-12-01",
+            "kind": "deadline"
+          },
+          {
+            "label": "Final Exam - All",
+            "date": "2025-12-05",
+            "kind": "exam"
+          },
+          {
+            "label": "Final Exam - All",
+            "date": "2025-12-08",
+            "kind": "exam"
+          }
+        ]
+      },
+      "removed": [
+        {
+          "item": {
+            "label": "CH 4 Quiz",
+            "date": "2025-09-15",
+            "kind": "quiz"
+          },
+          "reason": "date-not-bound"
+        },
+        {
+          "item": {
+            "label": "CH 8 Quiz",
+            "date": "2025-10-13",
+            "kind": "quiz"
+          },
+          "reason": "date-not-bound"
+        },
+        {
+          "item": {
+            "label": "CH 11 Quiz",
+            "date": "2025-11-10",
+            "kind": "quiz"
+          },
+          "reason": "date-not-bound"
+        },
+        {
+          "item": {
+            "label": "CH 12 Quiz",
+            "date": "2025-12-01",
+            "kind": "quiz"
+          },
+          "reason": "date-not-bound"
+        }
+      ],
+      "termSource": "inferred"
+    },
+    {
+      "id": "duke-compsci210-s2026",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightsOnlyExact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": {
+        "pairRecall": 0.6666666666666666,
+        "pairPrecision": 1,
+        "exact": false,
+        "precision": 1,
+        "recall": 0.6666666666666666
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "gradingStatus": "checked",
+      "datesStatus": "checked",
+      "datesChecksOk": true,
+      "charsToCloud": 755,
+      "chars": 13557,
+      "ms": 6094,
+      "gradingFirstIssues": [],
+      "datesFirstIssues": [
+        "date-not-in-text:2026-02-18 for \"Midterm Exam 1\" does not appear in the syllabus."
+      ],
+      "gradingValue": {
+        "totalPoints": 100,
+        "components": [
+          {
+            "name": "Midterm 1",
+            "weight": 15,
+            "kind": "exam"
+          },
+          {
+            "name": "Midterm 2",
+            "weight": 15,
+            "kind": "exam"
+          },
+          {
+            "name": "Final",
+            "weight": 20,
+            "kind": "exam"
+          },
+          {
+            "name": "Projects",
+            "weight": 20,
+            "kind": "project"
+          },
+          {
+            "name": "Labs",
+            "weight": 23,
+            "kind": "assignment"
+          },
+          {
+            "name": "Discussion",
+            "weight": 7,
+            "kind": "participation"
+          }
+        ]
+      },
+      "datesValue": {
+        "items": [
+          {
+            "label": "Midterm Exam 2",
+            "date": "2026-04-01",
+            "kind": "exam"
+          },
+          {
+            "label": "Final Exam",
+            "date": "2026-04-28",
+            "kind": "exam"
+          }
+        ]
+      },
+      "removed": [
+        {
+          "item": {
+            "label": "Midterm Exam 1",
+            "date": "2026-02-18",
+            "kind": "exam"
+          },
+          "reason": "date-not-in-text"
+        }
+      ],
+      "termSource": "inferred"
+    },
+    {
+      "id": "umd-cmsc216-s2026",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightsOnlyExact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": {
+        "pairRecall": 1,
+        "pairPrecision": 1,
+        "exact": true,
+        "precision": 1,
+        "recall": 1
+      },
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": false,
+      "gradingStatus": "failed",
+      "datesStatus": "checked",
+      "datesChecksOk": true,
+      "charsToCloud": 1411,
+      "chars": 26608,
+      "ms": 14336,
+      "gradingFirstIssues": [
+        "weight-not-bound",
+        "weight-not-bound"
+      ],
+      "datesFirstIssues": [],
+      "gradingValue": {
+        "totalPoints": 100,
+        "components": [
+          {
+            "name": "Midterm 1",
+            "weight": 18,
+            "kind": "exam"
+          },
+          {
+            "name": "Midterm 2",
+            "weight": 25,
+            "kind": "exam"
+          },
+          {
+            "name": "Final (comprehensive)",
+            "weight": 25,
+            "kind": "exam"
+          },
+          {
+            "name": "Programming projects",
+            "weight": 17,
+            "kind": "project"
+          },
+          {
+            "name": "In–class (discussion or lecture) worksheets",
+            "weight": 12,
+            "kind": "assignment"
+          },
+          {
+            "name": "Class participation",
+            "weight": 3,
+            "kind": "participation"
+          }
+        ]
+      },
+      "datesValue": {
+        "items": [
+          {
+            "label": "Project #1",
+            "date": "2026-02-10",
+            "kind": "deadline"
+          },
+          {
+            "label": "Project #2",
+            "date": "2026-02-18",
+            "kind": "deadline"
+          },
+          {
+            "label": "Project #3",
+            "date": "2026-03-02",
+            "kind": "deadline"
+          },
+          {
+            "label": "Exam #1",
+            "date": "2026-03-05",
+            "kind": "exam"
+          },
+          {
+            "label": "Project #4",
+            "date": "2026-03-10",
+            "kind": "deadline"
+          },
+          {
+            "label": "Project #5",
+            "date": "2026-03-26",
+            "kind": "deadline"
+          },
+          {
+            "label": "Project #6",
+            "date": "2026-03-31",
+            "kind": "deadline"
+          },
+          {
+            "label": "Project #7",
+            "date": "2026-04-10",
+            "kind": "deadline"
+          },
+          {
+            "label": "Project #8",
+            "date": "2026-04-21",
+            "kind": "deadline"
+          },
+          {
+            "label": "Exam #2",
+            "date": "2026-04-23",
+            "kind": "exam"
+          },
+          {
+            "label": "Project #9",
+            "date": "2026-04-30",
+            "kind": "deadline"
+          },
+          {
+            "label": "Project #10",
+            "date": "2026-05-07",
+            "kind": "deadline"
+          },
+          {
+            "label": "Final exam",
+            "date": "2026-05-12",
+            "kind": "exam"
+          }
+        ]
+      },
+      "removed": [],
+      "termSource": "inferred"
+    },
+    {
+      "id": "fiu-eco2023-f2025",
+      "mode": "cloud",
+      "grading": {
+        "exact": true,
+        "weightsOnlyExact": true,
+        "weightRecall": 1,
+        "weightPrecision": 1
+      },
+      "dates": null,
+      "gradingSource": "in_cloud",
+      "datesSource": "in_cloud",
+      "gradingEscalated": false,
+      "datesEscalated": false,
+      "gradingChecksOk": true,
+      "gradingStatus": "checked",
+      "datesStatus": "review",
+      "datesChecksOk": true,
+      "charsToCloud": 1269,
+      "chars": 12163,
+      "ms": 5545,
+      "gradingFirstIssues": [],
+      "datesFirstIssues": [
+        "no-dates:We found exams in this syllabus but no dates for them. Check the course schedule."
+      ],
+      "gradingValue": {
+        "totalPoints": 100,
+        "components": [
+          {
+            "name": "Homework",
+            "weight": 20,
+            "bonus": false,
+            "kind": "assignment"
+          },
+          {
+            "name": "Short Quizzes",
+            "weight": 25,
+            "bonus": false,
+            "kind": "quiz"
+          },
+          {
+            "name": "Exam 1",
+            "weight": 20,
+            "bonus": false,
+            "kind": "exam"
+          },
+          {
+            "name": "Exam 2",
+            "weight": 20,
+            "bonus": false,
+            "kind": "exam"
+          },
+          {
+            "name": "Final Exam",
+            "weight": 15,
+            "bonus": false,
+            "kind": "exam"
+          }
+        ]
+      },
+      "datesValue": {
+        "items": []
+      },
+      "removed": [],
+      "termSource": "inferred"
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 // Dev-server plugin: serves ../eval as /evaldata and stores posted results in
 // ../eval/results. Used only by eval.html during `vite` (never in a build).
 import type { Plugin } from 'vite';
-import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
-import { join, normalize, resolve } from 'node:path';
+import { mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { extname, join, resolve, sep } from 'node:path';
 
 const ROOT = resolve(__dirname, '../eval');
 
@@ -24,13 +24,14 @@ export function evalServer(): Plugin {
           });
           return;
         }
-        const file = normalize(join(ROOT, decodeURIComponent(url.pathname)));
-        if (!file.startsWith(ROOT) || !existsSync(file)) {
+        const pathname = decodeURIComponent(url.pathname);
+        const file = resolve(ROOT, `.${pathname}`);
+        if (!file.startsWith(ROOT + sep) || !statSync(file, { throwIfNoEntry: false })?.isFile()) {
           res.statusCode = 404;
           res.end('not found');
           return;
         }
-        res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+        res.setHeader('Content-Type', extname(file) === '.pdf' ? 'application/pdf' : 'text/plain; charset=utf-8');
         res.end(readFileSync(file));
       });
     },

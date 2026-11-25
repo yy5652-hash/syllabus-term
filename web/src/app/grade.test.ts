@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { calculateGrade } from './grade';
+import { calculateGrade, gradingTotal } from './grade';
 import type { GradingComponent } from '../core/schema';
 
 const components: GradingComponent[] = [
@@ -31,6 +31,14 @@ describe('grade calculator', () => {
     expect(calculateGrade(components, [90], 93).status).toBe('invalid');
     expect(calculateGrade([], [], 93).status).toBe('invalid');
     expect(calculateGrade(components, [90, null], NaN).status).toBe('invalid');
-    expect(calculateGrade([{ ...components[0], weight: 99.6 }], [null], 93).status).toBe('invalid');
+    expect(calculateGrade([{ ...components[0], weight: 99.4 }], [null], 93).status).toBe('invalid');
+    expect(calculateGrade([{ ...components[0], weight: 99.5 }], [null], 93).status).toBe('needed');
+  });
+  it('excludes bonus weights and points from both the total and required score', () => {
+    const withBonus = [...components, { name: 'Survey', weight: 3, kind: 'other' as const, bonus: true }];
+    expect(gradingTotal(withBonus)).toBe(100);
+    const ordinary = calculateGrade(components, [90, null], 93);
+    expect(calculateGrade(withBonus, [90, null, null], 93)).toEqual(ordinary);
+    expect(calculateGrade(withBonus, [90, null, 3], 93)).toEqual(ordinary);
   });
 });

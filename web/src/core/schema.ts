@@ -9,10 +9,13 @@ export interface GradingComponent {
   name: string;
   weight: number; // percent, 0–100
   kind: ComponentKind;
+  bonus?: boolean;
+  points?: number;
 }
 
 export interface GradingResult {
   components: GradingComponent[];
+  totalPoints?: number;
 }
 
 export interface DatedItem {
@@ -28,13 +31,16 @@ export interface ScheduleResult {
 export const GRADING_SCHEMA = {
   type: 'object',
   properties: {
+    totalPoints: { type: 'number' },
     components: {
       type: 'array',
       items: {
         type: 'object',
         properties: {
           name: { type: 'string' },
+          points: { type: 'number' },
           weight: { type: 'number' },
+          bonus: { type: 'boolean', description: 'true for extra credit that is added on top of 100%' },
           kind: { type: 'string', enum: ['exam', 'quiz', 'assignment', 'project', 'participation', 'other'] },
         },
         required: ['name', 'weight', 'kind'],
@@ -42,6 +48,17 @@ export const GRADING_SCHEMA = {
     },
   },
   required: ['components'],
+} as const;
+
+export const POINTS_SCHEMA = {
+  ...GRADING_SCHEMA,
+  properties: {
+    ...GRADING_SCHEMA.properties,
+    components: {
+      ...GRADING_SCHEMA.properties.components,
+      items: { ...GRADING_SCHEMA.properties.components.items, required: ['name', 'points', 'kind'] },
+    },
+  },
 } as const;
 
 export const SCHEDULE_SCHEMA = {

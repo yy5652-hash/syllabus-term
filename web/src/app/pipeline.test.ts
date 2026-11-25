@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { Runner } from '../core/router';
+import { sliceSection, type Runner } from '../core/router';
 import { extractWithProgress } from './pipeline';
 import { SAMPLE } from './sample';
 
@@ -23,5 +23,13 @@ describe('Remote Config escalation switch', () => {
     const cloud: Runner = async () => { calls.push('cloud'); return { source: 'in_cloud', text: '{"components":[]}' }; };
     await extractWithProgress(SAMPLE, 2026, { hybrid: device, cloud }, undefined, () => {});
     expect(calls).toEqual(['cloud']);
+  });
+  it('counts each failed cloud-only dispatch and keeps its source unknown', async () => {
+    const cloud: Runner = async () => { throw new Error('Cloud timeout'); };
+    const plan = await extractWithProgress(SAMPLE, 2026, { hybrid: cloud, cloud }, undefined, () => {});
+    for (const section of ['grading', 'schedule'] as const) {
+      expect(plan[section]).toMatchObject({ finalSource: 'unknown', escalated: false,
+        finalReport: { status: 'failed' }, charsSentToCloud: sliceSection(SAMPLE, section).length });
+    }
   });
 });

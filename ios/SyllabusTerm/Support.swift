@@ -1,3 +1,4 @@
+import FirebaseRemoteConfig
 import Foundation
 import PDFKit
 import TermCore
@@ -16,7 +17,35 @@ enum Sample {
   10/29 Problem set 2 due
   Final exam December 17
   """
-  static let term = Term(start: "2026-09-01", end: "2026-12-23")
+}
+
+struct CheckSettings {
+  static let defaultCloudTimeoutMs = 30_000.0
+  let escalate: Bool
+  let cloudTimeout: Duration
+
+  static func load() async -> Self {
+    let escalate = await Switches.escalationEnabled()
+    let configured = RemoteConfig.remoteConfig().configValue(forKey: "cloud_timeout_ms").numberValue.doubleValue
+    let milliseconds = configured.isNaN || configured == 0 ? defaultCloudTimeoutMs : configured
+    return Self(escalate: escalate, cloudTimeout: .seconds(min(120_000, max(5_000, milliseconds)) / 1_000))
+  }
+}
+
+enum TermDates {
+  static var calendar: Calendar {
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = .gmt
+    return calendar
+  }
+
+  static func date(_ iso: String) -> Date? {
+    guard isRealDate(iso) else { return nil }
+    return try? format.parse(iso)
+  }
+  static func iso(_ date: Date) -> String { format.format(date) }
+
+  private static let format = Date.ISO8601FormatStyle(timeZone: .gmt).year().month().day().dateSeparator(.dash)
 }
 
 enum SyllabusFile {

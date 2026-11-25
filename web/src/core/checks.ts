@@ -1,10 +1,12 @@
-// Deterministic checks run on every model answer. A "fail" issue means the
-// answer for that section is not trusted and the section is escalated to the
-// cloud model; a "warn" issue is shown to the student but does not escalate.
+import { binds, gradingEvidence, groupParts } from './grading';
+export { lineHasWeight, weightGrounded } from './grading';
+import { findDates, isRealDate, type DateMatch, type Term } from './dates';
+import { differentAssessments, examConflict, hasOrdinal, norm, ordinalsMatch, sharesWord, significantWords } from './names';
+import type { DateKind, DatedItem, GradingComponent, GradingResult, ScheduleResult } from './schema';
 
-import type { GradingResult, ScheduleResult } from './schema';
-
-export type Severity = 'fail' | 'warn';
+export { isRealDate, type Term } from './dates';
+export const SUM_TOLERANCE = 0.5;
+export type Severity = 'fail' | 'warn' | 'review';
 export interface Issue {
   code: string;
   severity: Severity;
@@ -12,11 +14,15 @@ export interface Issue {
 }
 
 export interface CheckReport {
-  ok: boolean; // no "fail" issues
+  ok: boolean; // no fail issues; use status for the checked badge
+  status: 'checked' | 'review' | 'failed';
   issues: Issue[];
 }
 
-const report = (issues: Issue[]): CheckReport => ({ ok: !issues.some((i) => i.severity === 'fail'), issues });
+function report(issues: Issue[]): CheckReport {
+  const ok = !issues.some(i => i.severity === 'fail');
+  return { ok, status: !ok ? 'failed' : issues.some(i => i.severity === 'review') ? 'review' : 'checked', issues };
+}
 
 export function parseJson<T>(text: string): T | null {
   const trimmed = text.trim().replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '');
@@ -27,34 +33,39 @@ export function parseJson<T>(text: string): T | null {
   }
 }
 
-const norm = (s: string) => s.toLowerCase().replace(/[–—]/g, '-').replace(/\s+/g, ' ');
+const linesOf = (s: string) => s.split(/\r?\n/).filter(l => l.trim());
 
-const STOP = new Set(['the', 'and', 'for', 'with', 'your', 'final', 'class', 'course', 'grade', 'total', 'each']);
-function significantWords(name: string): string[] {
-  return norm(name)
-    .split(/[^a-z0-9]+/)
-    .filter((w) => w.length >= 4 && !STOP.has(w));
-}
-
-/** Weight like 30 or 12.5 appears in the text as a percentage (30%, 30 %, 30 percent). */
-export function weightGrounded(weight: number, source: string): boolean {
-  const s = norm(source);
-  const forms = new Set([String(weight), weight.toFixed(1), weight.toFixed(0)].filter((f) => Number(f) === weight));
-  for (const f of forms) {
-    const esc = f.replace('.', '\\.');
-    if (new RegExp(`(^|[^0-9.])${esc}\\s*(%|percent|pct)`).test(s)) return true;
-  }
-  return false;
+// A neighbouring row with its own value is independent evidence. Only borrow
+// unanchored neighbours (e.g. the name cell above a standalone percentage).
+function context(lines: string[], i: number, anchors: boolean[], separator = ' ') {
+  return [i - 1, i, i + 1].filter(j => j >= 0 && j < lines.length && (j === i || !anchors[j]))
+    .map(j => lines[j]).join(separator);
 }
 
 export function checkGrading(r: GradingResult | null, source: string): CheckReport {
-  if (!r || !Array.isArray(r.components)) {
+  if (!r || !Array.isArray(r.components) || r.components.some(c => !c || typeof c.name !== 'string')) {
     return report([{ code: 'json', severity: 'fail', message: 'Answer was not valid JSON for the grading schema.' }]);
   }
   const issues: Issue[] = [];
   const comps = r.components;
   if (comps.length === 0) issues.push({ code: 'empty', severity: 'fail', message: 'No grading components found.' });
-
+  const { rows, pointMode } = gradingEvidence(source);
+  if (pointMode) {
+    for (const c of comps) {
+      if (c.points !== undefined && rows.some(row => row.bonus && binds(c, c.points!, row))) c.bonus = true;
+    }
+    const pointsSum = comps.reduce((sum, c) => sum + (c.bonus ? 0 : c.points ?? 0), 0);
+    const total = r.totalPoints ?? pointsSum;
+    r.totalPoints = total;
+    const writtenTotal = rows.some(row => row.entries.some(e => e.value === total && /\btotal\b/i.test(e.label)));
+    if (!Number.isFinite(total) || total <= 0 || (!writtenTotal && Math.abs(total - pointsSum) > 1e-7)) {
+      issues.push({ code: 'total-points', severity: 'fail', message: 'Check the total points against the course total.' });
+    }
+    for (const c of comps) {
+      c.weight = typeof c.points === 'number' && Number.isFinite(c.points) && total > 0
+        ? Math.round(c.points / total * 10000) / 100 : 0;
+    }
+  }
   const seen = new Set<string>();
   for (const c of comps) {
     const key = norm(c.name).trim();
@@ -64,72 +75,114 @@ export function checkGrading(r: GradingResult | null, source: string): CheckRepo
       issues.push({ code: 'range', severity: 'fail', message: `"${c.name}" has weight ${c.weight}, outside 0–100.` });
       continue;
     }
-    if (!weightGrounded(c.weight, source)) {
-      issues.push({ code: 'weight-not-in-text', severity: 'fail', message: `${c.weight}% for "${c.name}" does not appear in the syllabus.` });
+    const amount = pointMode ? c.points! : c.weight;
+    const unit = pointMode ? ' points' : '%';
+    const bound = rows.filter(row => binds(c, amount, row));
+    const group = groupParts(c, rows, pointMode) !== undefined;
+    if (group) issues.push({ code: 'group-has-parts', severity: 'fail', message: `Split '${c.name}' into its parts` });
+    if (!rows.some(row => row.entries.some(e => e.value === amount)) && !group) {
+      issues.push({ code: 'weight-not-in-text', severity: 'fail', message: `${amount}${unit} for "${c.name}" does not appear in the syllabus.` });
     }
     const words = significantWords(c.name);
-    if (words.length > 0 && !words.some((w) => norm(source).includes(w))) {
+    if (!bound.length && words.length > 0 && !sharesWord(c.name, source) && !words.some(w => norm(source).includes(w))) {
       issues.push({ code: 'name-not-in-text', severity: 'fail', message: `"${c.name}" is not mentioned in the syllabus.` });
     }
+    if (bound.some(row => row.bonus)) c.bonus = true;
+    if (!bound.length && !group) issues.push({ code: 'weight-not-bound', severity: 'fail', message: `Cannot link "${c.name}" to ${amount}${unit} in its grading row.` });
   }
 
-  const sum = comps.reduce((a, c) => a + (Number(c.weight) || 0), 0);
-  if (comps.length > 0 && Math.abs(sum - 100) > 0.5) {
-    issues.push({ code: 'sum', severity: 'fail', message: `Weights add up to ${round(sum)}%, not 100%.` });
+  const sum = comps.reduce((a, c) => a + (c.bonus ? 0 : Number(c.weight) || 0), 0);
+  if (comps.length > 0 && Math.abs(sum - 100) > SUM_TOLERANCE) {
+    issues.push({ code: 'sum', severity: 'fail', message: `Weights add up to ${Math.round(sum * 10) / 10}%, not 100%.` });
   }
   return report(issues);
 }
 
-const round = (x: number) => Math.round(x * 10) / 10;
-
-const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
-
-export function isRealDate(iso: string): boolean {
-  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
-  if (!m) return false;
-  const d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
-  return d.getUTCFullYear() === +m[1] && d.getUTCMonth() === +m[2] - 1 && d.getUTCDate() === +m[3];
+export function dateGrounded(iso: string, source: string, term?: Term): boolean {
+  return isRealDate(iso) && findDates(source, Number(term?.start.slice(0, 4) ?? iso.slice(0, 4)), term).some(d => d.iso === iso);
 }
 
-/** The date is written somewhere in the text: "Oct 14", "October 14th", "14 Oct", "10/14", "2026-10-14". */
-export function dateGrounded(iso: string, source: string): boolean {
-  if (!isRealDate(iso)) return false;
-  const [, mm, dd] = iso.split('-').map(Number);
-  const s = norm(source);
-  if (s.includes(iso)) return true;
-  const month = MONTHS[mm - 1];
-  const names = [month, month.slice(0, 3), month.slice(0, 4)]; // "sept"
-  const day = `0?${dd}(st|nd|rd|th)?`;
-  for (const n of names) {
-    if (new RegExp(`\\b${n}\\.?\\s+${day}\\b`).test(s)) return true;
-    if (new RegExp(`\\b${day}\\s+(of\\s+)?${n}\\b`).test(s)) return true;
-  }
-  if (new RegExp(`(^|[^0-9])0?${mm}/0?${dd}([^0-9]|$)`).test(s)) return true;
-  return false;
+const examWord = /\b(?:exams?|mid[ -]?terms?|finals?|quiz(?:zes)?)\b/i;
+const kindWords: Partial<Record<DateKind, RegExp>> = {
+  exam: /\b(?:exams?|mid[ -]?terms?|finals?|tests?)\b/i,
+  quiz: /\bquiz(?:zes)?\b/i,
+  deadline: /\b(?:due|deadlines?|assignments?|homework|papers?|projects?|presentations?|reports?)\b/i,
+};
+
+function dateBound(it: DatedItem, text: string, row: DateMatch[]): boolean {
+  // Remove date digits before looking for event ordinals such as Exam 1.
+  const evidence = row.reduce((s, d) => s.replace(d.raw, ' '), text);
+  return (!hasOrdinal(evidence) || ordinalsMatch(it.label, evidence)) && !examConflict(it.label, evidence) &&
+    !differentAssessments(it.label, evidence) && (sharesWord(it.label, evidence) || !!kindWords[it.kind]?.test(evidence));
 }
 
-export interface Term {
-  start: string; // YYYY-MM-DD
-  end: string;
-}
-
-export function checkSchedule(r: ScheduleResult | null, source: string, term?: Term): CheckReport {
-  if (!r || !Array.isArray(r.items)) {
+export function checkSchedule(r: ScheduleResult | null, source: string, term?: Term, fullText = source, defaultYear?: number): CheckReport {
+  if (!r || !Array.isArray(r.items) || r.items.some(it => !it || typeof it.date !== 'string' || typeof it.label !== 'string')) {
     return report([{ code: 'json', severity: 'fail', message: 'Answer was not valid JSON for the schedule schema.' }]);
   }
   const issues: Issue[] = [];
+  const lines = linesOf(source);
+  const year = term ? Number(term.start.slice(0, 4)) : defaultYear;
+  const datedLines = (y: number) => lines.map(l => findDates(l, y, term));
+  const dates = datedLines(year ?? 2000);
+  if (!r.items.length && lines.some((l, i) => dates[i].length && (examWord.test(l) || /\b(?:tests?|due|deadlines?)\b/i.test(l)))) {
+    issues.push({ code: 'missing-dates', severity: 'fail', message: 'The schedule lists dated assessments, but the answer contains none.' });
+  }
+  if (!lines.length && examWord.test(fullText)) {
+    issues.push({ code: 'no-dates', severity: 'review', message: 'We found exams in this syllabus but no dates for them. Check the course schedule.' });
+  }
   for (const it of r.items) {
-    if (!it.label?.trim()) issues.push({ code: 'label', severity: 'fail', message: `An item on ${it.date} has no name.` });
+    if (!it.label.trim()) issues.push({ code: 'label', severity: 'fail', message: `An item on ${it.date} has no name.` });
     if (!isRealDate(it.date)) {
       issues.push({ code: 'date-format', severity: 'fail', message: `"${it.label}" has an invalid date "${it.date}".` });
       continue;
     }
-    if (!dateGrounded(it.date, source)) {
+    const rows = year === undefined ? datedLines(Number(it.date.slice(0, 4))) : dates;
+    const anchors = rows.map(row => row.length > 0);
+    let grounded = false;
+    let bound = false;
+    for (const [i, row] of rows.entries()) {
+      if (!row.some(d => d.iso === it.date)) continue;
+      grounded = true;
+      const text = context(lines, i, anchors);
+      if (dateBound(it, text, row)) bound = true;
+    }
+    if (!grounded) {
       issues.push({ code: 'date-not-in-text', severity: 'fail', message: `${it.date} for "${it.label}" does not appear in the syllabus.` });
+      const sameDay = rows.flat().filter(d => d.iso.slice(5) === it.date.slice(5));
+      if (sameDay.length && sameDay.every(d => d.explicitYear)) {
+        issues.push({ code: 'year-mismatch', severity: 'fail', message: `The written year for "${it.label}" differs from ${it.date.slice(0, 4)}.` });
+      }
+    } else if (!bound) {
+      issues.push({ code: 'date-not-bound', severity: 'fail', message: `Cannot link "${it.label}" to ${it.date} in the schedule.` });
     }
     if (term && (it.date < term.start || it.date > term.end)) {
-      issues.push({ code: 'outside-term', severity: 'fail', message: `"${it.label}" on ${it.date} falls outside the term.` });
+      const boundary = it.date < term.start ? 'starts ' + term.start : 'ends ' + term.end;
+      issues.push({ code: 'outside-term', severity: 'review', message: `${term.label ? term.label + ' term' : 'Term'} ${boundary}; check the term or this date (${it.date}).` });
     }
   }
   return report(issues);
+}
+
+/** Return the first bound window, preserving the original line breaks. */
+export function evidenceFor(item: GradingComponent | DatedItem, sectionText: string, term?: Term): string | null {
+  const lines = linesOf(sectionText);
+  if ('weight' in item) {
+    if (!(item.weight > 0 && item.weight <= 100)) return null;
+    const { rows, pointMode } = gradingEvidence(sectionText);
+    const value = pointMode ? item.points : item.weight;
+    return value === undefined ? null : rows.find(row => binds(item, value, row))?.window ?? null;
+  }
+
+  if (!isRealDate(item.date) || !item.label.trim()) return null;
+  const year = Number(term?.start.slice(0, 4) ?? item.date.slice(0, 4));
+  const dates = lines.map(line => findDates(line, year, term));
+  const anchors = dates.map(row => row.length > 0);
+  const i = dates.findIndex((row, j) => row.some(d => d.iso === item.date) && dateBound(item, context(lines, j, anchors), row));
+  return i < 0 ? null : context(lines, i, anchors, '\n');
+}
+
+export interface RemovedItem {
+  item: DatedItem;
+  reason: string;
 }

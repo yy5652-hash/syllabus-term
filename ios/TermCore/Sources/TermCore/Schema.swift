@@ -4,12 +4,28 @@ public struct GradingComponent: Codable, Equatable, Sendable {
   public var name: String
   public var weight: Double // percent, 0–100
   public var kind: String   // exam | quiz | assignment | project | participation | other
-  public init(name: String, weight: Double, kind: String) { self.name = name; self.weight = weight; self.kind = kind }
+  public var bonus: Bool?
+  public var points: Double?
+  public init(name: String, weight: Double = 0, kind: String, bonus: Bool? = nil, points: Double? = nil) {
+    self.name = name; self.weight = weight; self.kind = kind; self.bonus = bonus; self.points = points
+  }
+
+  public init(from decoder: Decoder) throws {
+    let fields = try decoder.container(keyedBy: CodingKeys.self)
+    points = try fields.decodeIfPresent(Double.self, forKey: .points)
+    weight = try points == nil ? fields.decode(Double.self, forKey: .weight) : fields.decodeIfPresent(Double.self, forKey: .weight) ?? 0
+    name = try fields.decode(String.self, forKey: .name)
+    kind = try fields.decode(String.self, forKey: .kind)
+    bonus = try fields.decodeIfPresent(Bool.self, forKey: .bonus)
+  }
 }
 
 public struct GradingResult: Codable, Equatable, Sendable {
   public var components: [GradingComponent]
-  public init(components: [GradingComponent]) { self.components = components }
+  public var totalPoints: Double?
+  public init(components: [GradingComponent], totalPoints: Double? = nil) {
+    self.components = components; self.totalPoints = totalPoints
+  }
 }
 
 public struct DatedItem: Codable, Equatable, Sendable, Identifiable {
@@ -26,7 +42,10 @@ public struct ScheduleResult: Codable, Equatable, Sendable {
 }
 
 public struct Term: Equatable, Sendable {
+  public var label: String?
   public var start: String // YYYY-MM-DD
   public var end: String
-  public init(start: String, end: String) { self.start = start; self.end = end }
+  public init(label: String? = nil, start: String, end: String) {
+    self.label = label; self.start = start; self.end = end
+  }
 }

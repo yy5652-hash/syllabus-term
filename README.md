@@ -7,7 +7,7 @@
 - **Code:** https://github.com/yy5652-hash/syllabus-term
 - **Video (2:25):** https://youtu.be/_0lt9Qd4QL0
 
-On 43 real, publicly posted university syllabi, **87%** of grading tables came out exactly right with **3.8%** of the syllabus text leaving the device. Sending everything to the cloud: 85% exact, 23% of the text sent. (Mean of two full runs; method below.)
+On 43 real, publicly posted university syllabi, **82%** of grading tables matched exactly (every component name with its weight) with **5.9%** of the syllabus text sent to the cloud. Sending everything to the cloud: 78% exact, 23% of the text sent. On 12 further syllabus PDFs read through the app's own importer, hybrid sent 2.2% of the text (cloud only: 11%). Every table that passed its checks on the 43 was exact: 56 of 56. (Mean of two full runs; method below.)
 
 ## The idea: escalate on verification, not on availability
 
@@ -31,7 +31,8 @@ syllabus ─► slice: grading lines │ dated lines
 
 - **Only the failing section leaves the device**, and only its relevant lines (about 90 of 252 characters on the sample), with the failed checks attached as hints.
 - **The checks are the same code on every path.** A cloud answer that fails is shown with its issues; nothing is silently trusted.
-- **Repair before escalation.** A date that is not written anywhere in the syllabus cannot be fixed by a bigger model reading the same text, so it is dropped on device instead of paying for a cloud call.
+- **Repair before escalation.** A date that is not written anywhere in the syllabus is dropped on device, and a group written as "Exams (50%): Midterm 20%, Final 30%" is split deterministically, instead of paying for a cloud call.
+- **"Checked" means bound to the page.** Each weight must sit within a line of its component's name, each date within a line of its exam. What cannot be confirmed (no exam dates, a date outside the term) is marked *Needs your review*, never ticked.
 
 ## Firebase in this project
 
@@ -44,7 +45,7 @@ syllabus ─► slice: grading lines │ dated lines
 | **Anonymous Auth + Firestore** | One text-free record per check (characters total and sent, where each section was answered, check results, escalations, time). Powers the live counter on the homepage. Rules allow create-only records with an exact key set, the caller's own uid and server time. [`firestore.rules`](firestore.rules) |
 | **Hosting** | The judge link, deployed by [`scripts/deploy.py`](scripts/deploy.py) with a self-check and automatic rollback. |
 
-No syllabus text, course names or grades are stored anywhere. Saved courses stay in the browser's local storage.
+Saved courses, including their syllabus text and your grades, stay in this browser's local storage. Run statistics contain no syllabus text, course names or grades.
 
 ## What a student gets
 
@@ -57,13 +58,15 @@ No syllabus text, course names or grades are stored anywhere. Saved courses stay
 
 `eval/labels.jsonl` holds hand-made labels (grading components and graded dates) for 43 syllabi posted publicly by universities; `eval/SOURCES.md` lists each source URL. The syllabus texts are not redistributed: `uv run scripts/fetch_cases.py --check` rebuilds them from the source pages and checks each against the SHA-256 of the copy we labelled (43 of 43 matched on 2026-11-24; see [`eval/README.md`](eval/README.md)). `web/eval.html` runs the full router on every case in three modes (hybrid, device only, cloud only) in Chrome with Gemini Nano, and writes the results to `eval/results/`. Runs and conclusions are logged in [`EXPERIMENTS.md`](EXPERIMENTS.md).
 
-| Mode | Grading exact | Text sent to cloud |
-|---|---|---|
-| Hybrid, verify-then-escalate (v5, v6 mean) | 0.87 | 3.8% |
-| Device only | 0.69 | 0% |
-| Cloud only | 0.85 | 22.9% |
+Scoring is strict: a grading table is exact only when every labelled component is matched by name **and** weight, with no extra rows; a date counts only when its date and its event both match. Every number is the mean of two full runs (v9, v10).
 
-When the grading checks pass, the on-device answer is exact 27 of 30 times; when they fail it is exact 0 of 9 times. That is why the checks are a good trigger for escalation.
+| Mode | Grading exact (43 syllabi) | Text sent to cloud | Grading exact (12 PDFs) | Text sent to cloud |
+|---|---|---|---|---|
+| Hybrid, verify-then-escalate | **0.82** | **5.9%** | 0.71 | **2.2%** |
+| Device only | 0.71 | 0% | 0.50 | 0% |
+| Cloud only | 0.78 | 23.3% | 0.75 | 11.0% |
+
+On the 43, every grading table that passed its checks was exact (56 of 56 over the two runs), and the date pairs (event + date) were recalled at 0.92. That is why the checks are a good trigger for escalation: a ✓ means the answer can be relied on, and the sections without one are the ones sent to the cloud or marked for review. The 12 PDFs (eval/holdout/SOURCES.md, 11 universities) were added after the checks were written and run end to end through the PDF.js importer and term detection the app uses.
 
 ## Run it
 

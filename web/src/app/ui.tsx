@@ -1,4 +1,6 @@
 import { useEffect, useRef, type ReactNode } from 'react';
+import type { CheckReport, RemovedItem } from '../core/checks';
+import type { Source } from '../core/router';
 import type { Outcome, SectionProgress } from './pipeline';
 
 export function Icon({ name, size = 20 }: { name: 'book' | 'upload' | 'arrow' | 'sun' | 'moon' | 'close' | 'calendar' | 'trash'; size?: number }) {
@@ -30,35 +32,54 @@ export function Modal({ onClose, children }: { onClose: () => void; children: Re
   </dialog>;
 }
 
+const sourceLabel: Record<Source, string> = {
+  on_device: 'Read on device', in_cloud: 'Read in cloud', unknown: 'Read with a fallback',
+};
+
+const removalReasons: Record<string, string> = {
+  'date-format': 'The date format is invalid.',
+  'date-not-in-text': 'The date could not be found in the syllabus text.',
+  'date-not-bound': 'The date could not be linked to this event.',
+  'year-mismatch': 'The year differs from the written date.',
+};
+
+export function RemovedDates({ removed }: { removed: RemovedItem[] }) {
+  if (!removed.length) return null;
+  return <div className="not-added"><strong>Not added</strong><ul>{removed.map(({ item, reason }, i) =>
+    <li key={i}>{item.label} · {item.date} — {removalReasons[reason] ?? reason}</li>)}</ul></div>;
+}
+
+export function ReportFeedback({ report }: { report: CheckReport }) {
+  if (report.status === 'checked') return null;
+  const review = report.status === 'review';
+  const issues = review ? report.issues.filter(i => i.severity === 'review') : report.issues;
+  return <div className={`warning${review ? ' review' : ''}`}><strong>{review ? 'Needs your review' : 'Review before relying on this plan'}</strong>
+    <ul>{issues.map((issue, i) => <li key={i}>{issue.message}</li>)}</ul></div>;
+}
+
 function outcomeLabel(outcome: Outcome): string {
-  if (outcome.escalationError) return 'Cloud unavailable — kept the on-device answer, please review';
-  if (!outcome.finalReport.ok) return 'Checks still need your review';
-  if (outcome.repairedItems) {
-    const n = outcome.repairedItems;
-    return `Checked on device ✓ · removed ${n} date${n === 1 ? '' : 's'} not in your syllabus`;
-  }
-  if (outcome.escalated) {
-    const count = outcome.firstReport.issues.filter((i) => i.severity === 'fail').length;
-    return `${count} check${count === 1 ? '' : 's'} failed → verified in cloud`;
-  }
+  if (outcome.finalReport.status !== 'checked' || outcome.finalSource === 'unknown') return sourceLabel[outcome.finalSource];
   return outcome.finalSource === 'on_device' ? 'Checked on device ✓' : 'Checked in cloud ✓';
 }
 
 export function ProgressRow({ progress, sourceChars, cloudOnly = false }: { progress: SectionProgress; sourceChars: number; cloudOnly?: boolean }) {
   const { section, state, outcome } = progress;
   const active = state === 'reading' || state === 'verifying';
+  const done = state === 'done' ? outcome : undefined;
   const label = state === 'waiting' ? 'Waiting for the previous section'
     : state === 'reading' ? cloudOnly ? 'Reading in the cloud…' : 'Reading on your device…'
     : state === 'verifying' ? 'Check failed → verifying in cloud…'
     : state === 'error' ? 'Could not finish this section'
-    : outcome ? outcomeLabel(outcome) : '';
+    : done ? outcomeLabel(done) : '';
   return <div className={`progress-row ${state}`}>
-    <div className="progress-symbol" aria-hidden="true">{active ? <span className="spinner" /> : state === 'done' && outcome?.finalReport.ok ? '✓' : state === 'error' ? '!' : <span className="small-dot" />}</div>
+    <div className="progress-symbol" aria-hidden="true">{active ? <span className="spinner" /> : done?.finalReport.status === 'checked' && done.finalSource !== 'unknown' ? '✓' : state === 'error' ? '!' : <span className="small-dot" />}</div>
     <div className="progress-copy"><div className="row-spread"><strong>{section === 'grading' ? 'Grading' : 'Dates'}</strong>{state === 'done' && outcome && <span className="meta">{(outcome.ms / 1000).toFixed(1)} s</span>}</div>
       <p>{label}</p>
       {outcome && outcome.charsSentToCloud > 0 && <p className="meta">{outcome.charsSentToCloud.toLocaleString()} characters sent to the cloud (of {sourceChars.toLocaleString()} in the syllabus)</p>}
       {outcome && outcome.firstReport.issues.length > 0 && <details><summary>View {outcome.firstReport.issues.length} initial check message{outcome.firstReport.issues.length === 1 ? '' : 's'}</summary><ul>{outcome.firstReport.issues.map((issue, i) => <li key={i}>{issue.message}</li>)}</ul></details>}
-      {state === 'done' && outcome && !outcome.finalReport.ok && <div className="warning"><strong>Review before relying on this plan.</strong><ul>{outcome.finalReport.issues.map((issue, i) => <li key={i}>{issue.message}</li>)}</ul></div>}
+      {done && <><ReportFeedback report={done.finalReport} />
+        {done.escalationError && <p className="meta">The cloud retry did not finish.</p>}
+        {section === 'schedule' && <RemovedDates removed={done.removed} />}</>}
     </div>
   </div>;
 }

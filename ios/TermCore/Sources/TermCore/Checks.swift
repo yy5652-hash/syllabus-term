@@ -1,8 +1,10 @@
 // Deterministic checks run on every model answer (port of web/src/core/checks.ts).
-// A "fail" issue means the section is not trusted and is escalated to the cloud.
 import Foundation
 
-public enum Severity: String, Sendable { case fail, warn }
+public let SUM_TOLERANCE = 0.5
+
+public enum Severity: String, Sendable { case fail, warn, review }
+public enum CheckStatus: String, Sendable { case checked, review, failed }
 
 public struct Issue: Equatable, Sendable {
   public var code: String
@@ -12,123 +14,206 @@ public struct Issue: Equatable, Sendable {
 
 public struct CheckReport: Equatable, Sendable {
   public var issues: [Issue]
-  public var ok: Bool { !issues.contains { $0.severity == .fail } }
-}
-
-func norm(_ s: String) -> String {
-  s.lowercased()
-    .replacingOccurrences(of: "–", with: "-").replacingOccurrences(of: "—", with: "-")
-    .replacingOccurrences(of: #"\s+"#, with: " ", options: .regularExpression)
-}
-
-func matches(_ pattern: String, _ s: String) -> Bool {
-  s.range(of: pattern, options: .regularExpression) != nil
-}
-
-private let stop: Set<String> = ["the", "and", "for", "with", "your", "final", "class", "course", "grade", "total", "each"]
-
-func significantWords(_ name: String) -> [String] {
-  norm(name).split(whereSeparator: { !($0.isASCII && ($0.isLetter || $0.isNumber)) })
-    .map(String.init).filter { $0.count >= 4 && !stop.contains($0) }
-}
-
-func formatWeight(_ w: Double, decimals: Int) -> String { String(format: "%.\(decimals)f", w) }
-
-/// Weight like 30 or 12.5 appears in the text as a percentage (30%, 30 %, 30 percent).
-public func weightGrounded(_ weight: Double, _ source: String) -> Bool {
-  let s = norm(source)
-  var forms: Set<String> = []
-  if weight == weight.rounded() { forms.insert(formatWeight(weight, decimals: 0)) }
-  if Double(formatWeight(weight, decimals: 1)) == weight { forms.insert(formatWeight(weight, decimals: 1)) }
-  let shortest = String(weight)
-  if Double(shortest) == weight, !shortest.hasSuffix(".0") { forms.insert(shortest) }
-  for f in forms {
-    let esc = f.replacingOccurrences(of: ".", with: "\\.")
-    if matches("(^|[^0-9.])\(esc)\\s*(%|percent|pct)", s) { return true }
+  public var ok: Bool { status != .failed }
+  public var status: CheckStatus {
+    if issues.contains(where: { $0.severity == .fail }) { return .failed }
+    return issues.contains(where: { $0.severity == .review }) ? .review : .checked
   }
-  return false
 }
 
-private func round1(_ x: Double) -> String {
-  let r = (x * 10).rounded() / 10
-  return r == r.rounded() ? String(Int(r)) : String(r)
+// Adjacent rows with their own value are independent. Borrow only neighbours
+// without a date or weight, such as the name cell above a standalone value.
+private func context(_ lines: [String], at index: Int, anchors: [Bool],
+                     includeNext: Bool = true, separator: String = " ") -> String {
+  ((index - 1)...(includeNext ? index + 1 : index))
+    .filter { lines.indices.contains($0) && ($0 == index || !anchors[$0]) }
+    .map { lines[$0] }.joined(separator: separator)
 }
 
-private func weightText(_ w: Double) -> String { w == w.rounded() ? String(Int(w)) : String(w) }
+private func weightText(_ weight: Double) -> String {
+  if let integer = Int(exactly: weight) { return String(integer) }
+  return String(weight)
+}
 
-public func checkGrading(_ r: GradingResult?, source: String) -> CheckReport {
-  guard let r else { return CheckReport(issues: [Issue(code: "json", severity: .fail, message: "The answer did not follow the grading schema.")]) }
+public func checkGrading(_ result: GradingResult?, source: String) -> CheckReport {
+  var result = result
+  return checkGrading(&result, source: source)
+}
+
+/// Checks the answer and records deterministically grounded extra credit on it.
+public func checkGrading(_ result: inout GradingResult?, source: String) -> CheckReport {
+  guard var components = result?.components else {
+    return CheckReport(issues: [Issue(code: "json", severity: .fail, message: "Answer was not valid JSON for the grading schema.")])
+  }
   var issues: [Issue] = []
-  if r.components.isEmpty { issues.append(Issue(code: "empty", severity: .fail, message: "No grading components found.")) }
+  if components.isEmpty {
+    issues.append(Issue(code: "empty", severity: .fail, message: "No grading components found."))
+  }
+  let grading = GradingRows(source)
+  let rows = grading.evidence
+  if grading.pointMode {
+    for i in components.indices {
+      let c = components[i]
+      if let points = c.points, rows.contains(where: { $0.bonus && $0.binds(c, points) }) { components[i].bonus = true }
+    }
+    let pointsSum = components.reduce(0.0) { $0 + ($1.bonus == true ? 0 : $1.points ?? 0) }
+    let total = result?.totalPoints ?? pointsSum
+    result?.totalPoints = total
+    let written = rows.contains { row in row.entries.contains { $0.value == total && totalWord.hasMatch(in: $0.label) } }
+    if !total.isFinite || total <= 0 || (!written && abs(total - pointsSum) > 1e-7) {
+      issues.append(Issue(code: "total-points", severity: .fail, message: "Check the total points against the course total."))
+    }
+    for i in components.indices {
+      let points = components[i].points ?? 0
+      components[i].weight = points.isFinite && total > 0 ? (points / total * 10000).rounded() / 100 : 0
+    }
+  }
+  let normalizedSource = norm(source)
   var seen: Set<String> = []
-  let src = norm(source)
-  for c in r.components {
-    let key = norm(c.name).trimmingCharacters(in: .whitespaces)
-    if seen.contains(key) { issues.append(Issue(code: "duplicate", severity: .fail, message: "\"\(c.name)\" is listed twice.")) }
-    seen.insert(key)
-    guard c.weight > 0 && c.weight <= 100 else {
-      issues.append(Issue(code: "range", severity: .fail, message: "\"\(c.name)\" has weight \(weightText(c.weight)), outside 0–100."))
+  for index in components.indices {
+    let component = components[index]
+    let key = norm(component.name).trimmingCharacters(in: .whitespaces)
+    let weight = weightText(component.weight)
+    if !seen.insert(key).inserted {
+      issues.append(Issue(code: "duplicate", severity: .fail, message: "\"\(component.name)\" is listed twice."))
+    }
+    guard component.weight > 0 && component.weight <= 100 else {
+      issues.append(Issue(code: "range", severity: .fail, message: "\"\(component.name)\" has weight \(weight), outside 0–100."))
       continue
     }
-    if !weightGrounded(c.weight, source) {
-      issues.append(Issue(code: "weight-not-in-text", severity: .fail, message: "\(weightText(c.weight))% for \"\(c.name)\" does not appear in the syllabus."))
+    let amount = grading.pointMode ? component.points ?? 0 : component.weight
+    let unit = grading.pointMode ? " points" : "%"
+    let bound = rows.filter { $0.binds(component, amount) }
+    let group = groupParts(component, rows, pointMode: grading.pointMode) != nil
+    if group { issues.append(Issue(code: "group-has-parts", severity: .fail, message: "Split '\(component.name)' into its parts")) }
+    if !group && !rows.contains(where: { $0.entries.contains { $0.value == amount } }) {
+      issues.append(Issue(code: "weight-not-in-text", severity: .fail,
+                          message: "\(weightText(amount))\(unit) for \"\(component.name)\" does not appear in the syllabus."))
     }
-    let words = significantWords(c.name)
-    if !words.isEmpty && !words.contains(where: { src.contains($0) }) {
-      issues.append(Issue(code: "name-not-in-text", severity: .fail, message: "\"\(c.name)\" is not mentioned in the syllabus."))
+    let words = significantWords(component.name)
+    if bound.isEmpty && !words.isEmpty && !sharesWord(component.name, source) && !words.contains(where: { normalizedSource.contains($0) }) {
+      issues.append(Issue(code: "name-not-in-text", severity: .fail, message: "\"\(component.name)\" is not mentioned in the syllabus."))
+    }
+    if bound.contains(where: \.bonus) { components[index].bonus = true }
+    if bound.isEmpty && !group {
+      issues.append(Issue(code: "weight-not-bound", severity: .fail, message: "Cannot link \"\(component.name)\" to \(weightText(amount))\(unit) in its grading row."))
     }
   }
-  let sum = r.components.reduce(0) { $0 + $1.weight }
-  if !r.components.isEmpty && abs(sum - 100) > 0.5 {
-    issues.append(Issue(code: "sum", severity: .fail, message: "Weights add up to \(round1(sum))%, not 100%."))
+
+  let sum = components.reduce(0.0) { sum, component in
+    sum + (component.bonus == true || component.weight.isNaN ? 0 : component.weight)
   }
+  if !components.isEmpty && abs(sum - 100) > SUM_TOLERANCE {
+    let rounded = floor(sum * 10 + 0.5) / 10
+    issues.append(Issue(code: "sum", severity: .fail, message: "Weights add up to \(weightText(rounded))%, not 100%."))
+  }
+  result?.components = components
   return CheckReport(issues: issues)
 }
 
-private let months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
-
-public func isRealDate(_ iso: String) -> Bool {
-  guard matches(#"^\d{4}-\d{2}-\d{2}$"#, iso) else { return false }
-  let p = iso.split(separator: "-").compactMap { Int($0) }
-  var cal = Calendar(identifier: .gregorian); cal.timeZone = TimeZone(identifier: "UTC")!
-  guard let d = cal.date(from: DateComponents(year: p[0], month: p[1], day: p[2])) else { return false }
-  let c = cal.dateComponents([.year, .month, .day], from: d)
-  return c.year == p[0] && c.month == p[1] && c.day == p[2]
+public func dateGrounded(_ iso: String, _ source: String, term: Term? = nil) -> Bool {
+  guard isRealDate(iso), let year = Int(term?.start.prefix(4) ?? iso.prefix(4)) else { return false }
+  return findDates(source, defaultYear: year, term: term).contains { $0.iso == iso }
 }
 
-/// The date is written somewhere in the text: "Oct 14", "October 14th", "14 Oct", "10/14", "2026-10-14".
-public func dateGrounded(_ iso: String, _ source: String) -> Bool {
-  guard isRealDate(iso) else { return false }
-  let p = iso.split(separator: "-").compactMap { Int($0) }
-  let (mm, dd) = (p[1], p[2])
-  let s = norm(source)
-  if s.contains(iso) { return true }
-  let month = months[mm - 1]
-  let day = "0?\(dd)(st|nd|rd|th)?"
-  for n in [month, String(month.prefix(3)), String(month.prefix(4))] {
-    if matches("\\b\(n)\\.?\\s+\(day)\\b", s) { return true }
-    if matches("\\b\(day)\\s+(of\\s+)?\(n)\\b", s) { return true }
+private let examWord = syllabusRegex(#"\b(?:exams?|mid[ -]?terms?|finals?|quiz(?:zes)?)\b"#, options: .caseInsensitive)
+private let datedAssessmentWord = syllabusRegex(#"\b(?:tests?|due|deadlines?)\b"#, options: .caseInsensitive)
+private let kindWords = [
+  "exam": #"\b(?:exams?|mid[ -]?terms?|finals?|tests?)\b"#,
+  "quiz": #"\bquiz(?:zes)?\b"#,
+  "deadline": #"\b(?:due|deadlines?|assignments?|homework|papers?|projects?|presentations?|reports?)\b"#,
+].mapValues { syllabusRegex($0, options: .caseInsensitive) }
+
+private func dateBound(_ item: DatedItem, context: String, dates: [DateMatch]) -> Bool {
+  var evidence = context
+  // Remove date digits before checking assessment ordinals such as Exam 1.
+  for date in dates {
+    if let range = evidence.range(of: date.raw, options: .literal) { evidence.replaceSubrange(range, with: " ") }
   }
-  return matches("(^|[^0-9])0?\(mm)/0?\(dd)([^0-9]|$)", s)
+  return (!hasOrdinal(evidence) || ordinalsMatch(item.label, evidence)) && !examConflict(item.label, evidence) &&
+    !differentAssessments(item.label, evidence) &&
+    (sharesWord(item.label, evidence) || kindWords[item.kind]?.hasMatch(in: evidence) == true)
 }
 
-public func checkSchedule(_ r: ScheduleResult?, source: String, term: Term? = nil) -> CheckReport {
-  guard let r else { return CheckReport(issues: [Issue(code: "json", severity: .fail, message: "The answer did not follow the schedule schema.")]) }
+public func checkSchedule(_ result: ScheduleResult?, source: String, term: Term? = nil,
+                          fullText: String? = nil, defaultYear: Int? = nil) -> CheckReport {
+  guard let result else {
+    return CheckReport(issues: [Issue(code: "json", severity: .fail, message: "Answer was not valid JSON for the schedule schema.")])
+  }
   var issues: [Issue] = []
-  for it in r.items {
-    if it.label.trimmingCharacters(in: .whitespaces).isEmpty {
-      issues.append(Issue(code: "label", severity: .fail, message: "An item on \(it.date) has no name."))
+  let lines = syllabusLines(source)
+  let year = term.flatMap { Int($0.start.prefix(4)) } ?? defaultYear
+  func datedLines(_ year: Int) -> [[DateMatch]] { lines.map { findDates($0, defaultYear: year, term: term) } }
+  let dates = datedLines(year ?? 2000)
+  if result.items.isEmpty && lines.indices.contains(where: { i in
+    !dates[i].isEmpty && (examWord.hasMatch(in: lines[i]) || datedAssessmentWord.hasMatch(in: lines[i]))
+  }) {
+    issues.append(Issue(code: "missing-dates", severity: .fail, message: "The schedule lists dated assessments, but the answer contains none."))
+  }
+  if lines.isEmpty && examWord.hasMatch(in: fullText ?? source) {
+    issues.append(Issue(code: "no-dates", severity: .review,
+                        message: "We found exams in this syllabus but no dates for them. Check the course schedule."))
+  }
+  for item in result.items {
+    if item.label.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+      issues.append(Issue(code: "label", severity: .fail, message: "An item on \(item.date) has no name."))
     }
-    guard isRealDate(it.date) else {
-      issues.append(Issue(code: "date-format", severity: .fail, message: "\"\(it.label)\" has an invalid date \"\(it.date)\"."))
+    guard isRealDate(item.date), let itemYear = Int(item.date.prefix(4)) else {
+      issues.append(Issue(code: "date-format", severity: .fail, message: "\"\(item.label)\" has an invalid date \"\(item.date)\"."))
       continue
     }
-    if !dateGrounded(it.date, source) {
-      issues.append(Issue(code: "date-not-in-text", severity: .fail, message: "\(it.date) for \"\(it.label)\" does not appear in the syllabus."))
+    let rows = year == nil ? datedLines(itemYear) : dates
+    let anchors = rows.map { !$0.isEmpty }
+    var grounded = false
+    var bound = false
+    for (i, row) in rows.enumerated() where row.contains(where: { $0.iso == item.date }) {
+      grounded = true
+      if dateBound(item, context: context(lines, at: i, anchors: anchors), dates: row) {
+        bound = true
+        break
+      }
     }
-    if let term, it.date < term.start || it.date > term.end {
-      issues.append(Issue(code: "outside-term", severity: .fail, message: "\"\(it.label)\" on \(it.date) falls outside the term."))
+    if !grounded {
+      issues.append(Issue(code: "date-not-in-text", severity: .fail, message: "\(item.date) for \"\(item.label)\" does not appear in the syllabus."))
+      let sameDay = rows.joined().filter { $0.iso.dropFirst(5) == item.date.dropFirst(5) }
+      if !sameDay.isEmpty && sameDay.allSatisfy(\.explicitYear) {
+        issues.append(Issue(code: "year-mismatch", severity: .fail, message: "The written year for \"\(item.label)\" differs from \(item.date.prefix(4))."))
+      }
+    } else if !bound {
+      issues.append(Issue(code: "date-not-bound", severity: .fail, message: "Cannot link \"\(item.label)\" to \(item.date) in the schedule."))
+    }
+    if let term, item.date < term.start || item.date > term.end {
+      let boundary = item.date < term.start ? "starts \(term.start)" : "ends \(term.end)"
+      let termName = term.label.map { $0.isEmpty ? "Term" : "\($0) term" } ?? "Term"
+      issues.append(Issue(code: "outside-term", severity: .review,
+                          message: "\(termName) \(boundary); check the term or this date (\(item.date))."))
     }
   }
   return CheckReport(issues: issues)
+}
+
+/// The first bound window with its original line breaks.
+public func evidenceFor(_ component: GradingComponent, source: String) -> String? {
+  guard component.weight > 0 && component.weight <= 100 else { return nil }
+  let grading = GradingRows(source)
+  guard let amount = grading.pointMode ? component.points : component.weight else { return nil }
+  return grading.evidence.first { $0.binds(component, amount) }?.window
+}
+
+/// The first bound window with its original line breaks.
+public func evidenceFor(_ item: DatedItem, source: String, term: Term? = nil) -> String? {
+  guard isRealDate(item.date), !item.label.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+        let year = Int(term?.start.prefix(4) ?? item.date.prefix(4)) else { return nil }
+  let lines = syllabusLines(source)
+  let rows = lines.map { findDates($0, defaultYear: year, term: term) }
+  let anchors = rows.map { !$0.isEmpty }
+  guard let index = rows.indices.first(where: { i in
+    rows[i].contains { $0.iso == item.date } && dateBound(item, context: context(lines, at: i, anchors: anchors), dates: rows[i])
+  }) else { return nil }
+  return context(lines, at: index, anchors: anchors, separator: "\n")
+}
+
+public struct RemovedItem: Equatable, Sendable {
+  public let item: DatedItem
+  public let reason: String
 }
