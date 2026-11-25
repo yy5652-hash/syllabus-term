@@ -142,7 +142,7 @@ struct ContentView: View {
           .padding(.top, 8).overlay(alignment: .top) { Rectangle().fill(Palette.line).frame(height: 1).offset(y: -4) }
         }
         if let e = checker.error { Text(e).foregroundStyle(Palette.rust).font(.subheadline) }
-        Text("On 43 real syllabi (web app): 87% of grading tables exactly right, with 3.8% of the text leaving the device. Cloud only: 85% and 23%.")
+        Text("On 43 real syllabi (web app): 82% of grading tables matched exactly, every name with its weight, with 5.9% of the text sent to the cloud. Cloud only: 78% and 23%.")
           .font(.footnote).foregroundStyle(Palette.muted).padding(.top, 8)
       }
       .padding(20)
