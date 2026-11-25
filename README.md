@@ -5,7 +5,7 @@
 - **Try it (no login):** https://buildhybridai-term.web.app
 - **Platforms:** Web (Chrome, Gemini Nano) and iOS (Apple Foundation Models), both through Firebase AI Logic
 - **Code:** https://github.com/yy5652-hash/syllabus-term
-- **Video:** _link added on submission_
+- **Video (2:25):** https://youtu.be/_0lt9Qd4QL0
 
 On 43 real, publicly posted university syllabi, **87%** of grading tables came out exactly right with **3.8%** of the syllabus text leaving the device. Sending everything to the cloud: 85% exact, 23% of the text sent. (Mean of two full runs; method below.)
 
