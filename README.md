@@ -1,11 +1,11 @@
 # Syllabus → Term
 
-**Your syllabus, checked on your device.** Drop in a course syllabus and get its grading weights and every exam and deadline as a plan you can trust. The AI on your device reads it, deterministic checks verify every number against the page, and only a section that fails a check is sent to Gemini in the cloud.
+**Your syllabus, checked on your device.** A syllabus can run 15 pages, with the weights and dates that decide your grade buried among the policies. Drop in a course syllabus and get its grading weights and every exam and deadline as a plan you can trust. The AI on your device reads it, deterministic checks verify every number against the page, and only a section that fails a check is sent to Gemini in the cloud.
 
 - **Try it (no login):** https://buildhybridai-term.web.app
 - **Platforms:** Web (Chrome, Gemini Nano) and iOS (Apple Foundation Models), both through Firebase AI Logic
 - **Code:** https://github.com/yy5652-hash/syllabus-term
-- **Video (1:47):** https://youtu.be/4CExhkrgfhg
+- **Video (2:00):** https://youtu.be/hDIkXo_nOuA
 
 On 43 real, publicly posted university syllabi, **82%** of grading tables matched exactly (every component name with its weight) with **5.9%** of the syllabus text sent to the cloud. Sending everything to the cloud: 78% exact, 23% of the text sent. On 12 further syllabus PDFs read through the app's own importer, hybrid sent 2.2% of the text (cloud only: 11%). Every table that passed its checks on the 43 was exact: 56 of 56. (Mean of two full runs; method below.)
 

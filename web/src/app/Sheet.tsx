@@ -61,7 +61,7 @@ export function Horizon({ pins, start, end }: { pins: HorizonPin[]; start?: stri
     return { ...pin, pos: own && shown.length === 1 ? 50 : pos, below };
   });
   return <section className="horizon-wrap" aria-labelledby="horizon-heading">
-    <h2 id="horizon-heading" className="horizon-heading">{own ? 'Your term' : 'The sample term, as it lands on your calendar'}</h2>
+    <h2 id="horizon-heading" className="horizon-heading">{own ? 'Your term' : 'The sample term on your calendar'}</h2>
     <div className="horizon-scroll">
       <ol className={`horizon ${placed.some((p) => p.below) ? 'two-sided' : ''}`}>
         {placed.map((pin) => <li key={`${pin.date}-${pin.label}`} className={`pin ${pin.below ? 'below' : ''}`} style={{ left: `${pin.pos}%` }}>

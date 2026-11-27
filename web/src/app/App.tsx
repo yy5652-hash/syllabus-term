@@ -144,7 +144,7 @@ export function App() {
         <section className="hero" aria-labelledby="home-heading">
           <div className="hero-copy">
             <h1 id="home-heading">{cloudOnly ? 'Your syllabus, checked against the page.' : 'Your syllabus, checked on your device.'}</h1>
-            <p className="lede">{cloudOnly ? "On this browser the AI on your device isn't available, so the grading and date sections (not the whole syllabus) are read by Gemini in the cloud." : 'The AI in your browser reads the grading weights and deadlines, then every number is checked against the page. Only a section that fails a check is sent to the cloud.'}</p>
+            <p className="lede">{cloudOnly ? 'Pulls the grading weights and exam dates out of a long syllabus and checks each one against the page. On this browser, Gemini reads them in the cloud.' : 'Pulls the grading weights and exam dates out of a long syllabus and checks each one against the page. Only what fails a check goes to the cloud.'}</p>
             <form className="start" onSubmit={(e) => void run(e)}>
               <div className={`drop ${dragging ? 'dragging' : ''}`} aria-busy={readingFile}
                 onDragOver={(e) => { e.preventDefault(); if (!readingFile) setDragging(true); }} onDragLeave={() => setDragging(false)}
@@ -165,9 +165,8 @@ export function App() {
                 <button className="primary" type="submit" disabled={readingFile}>Check my syllabus</button>
               </div>}
               {error && <p id="input-error" className="warning" role="alert">{error}</p>}
-              {model.availability === 'downloadable' && <p className="meta cloud-notice">You can enable on-device AI at the top of the page.</p>}
             </form>
-            <p className="proof">On 43 real syllabi, <b>82%</b> of grading tables matched exactly, every name with its weight, with <b>6%</b> of the text sent to the cloud. Sending everything to the cloud: 78% and 23%.{live && <> Live on this site: <b>{live.runs.toLocaleString()}</b> syllabi checked so far, <b>{Math.round(live.keptShare * 1000) / 10}%</b> of syllabus text kept on the device.</>}</p>
+            <p className="proof"><b>82%</b> of grading tables exact on 43 real syllabi, with <b>6%</b> of the text sent to the cloud. All-cloud: 78% and 23%.{live && <> Live on this site: <b>{live.runs.toLocaleString()}</b> syllabi checked so far, <b>{Math.round(live.keptShare * 1000) / 10}%</b> of syllabus text kept on the device.</>}</p>
           </div>
           <MarkedSheet />
         </section>
@@ -177,9 +176,9 @@ export function App() {
         <section className="how" aria-labelledby="how-heading" id="how-it-works">
           <h2 id="how-heading" className="sr-only">How it works</h2>
           <ol>
-            {cloudOnly ? <li><h3>Read the relevant sections</h3><p>Gemini reads the grading and date excerpts in the cloud.</p></li> : <li><h3>Read on your device</h3><p>Chrome’s built-in Gemini Nano reads the grading and date excerpts.</p></li>}
-            <li><h3>Check every number</h3><p>Grading weights and dates are checked against the text. Dates outside the term are flagged for review.</p></li>
-            {cloudOnly ? <li><h3>Review the suggested plan</h3><p>Check flagged items and make any corrections before saving.</p></li> : <li><h3>Ask the cloud only when a check fails</h3><p>That one section goes to Gemini in the cloud with the failed checks attached. The answer is checked again.</p></li>}
+            {cloudOnly ? <li><h3>Read in the cloud</h3><p>Gemini reads only the grading and date excerpts.</p></li> : <li><h3>Read on your device</h3><p>Chrome’s Gemini Nano reads the grading and dates.</p></li>}
+            <li><h3>Check every number</h3><p>Each weight and date must match the page.</p></li>
+            {cloudOnly ? <li><h3>Review, then save</h3><p>Fix anything flagged before saving.</p></li> : <li><h3>Cloud only when a check fails</h3><p>That section goes to Gemini with the failed check, then is checked again.</p></li>}
           </ol>
         </section>
 
