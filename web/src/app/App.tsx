@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useRef, useState, type FormEvent } from 'react';
 import { isRealDate, type Term } from '../core/checks';
 import { inferTerm } from '../core/dates';
-import { APP_NAME } from './brand';
+import { APP_NAME, IN_PRAMANA } from './brand';
 import { CoursePlan, formatDate } from './CoursePlan';
 import { ModelStatus, useDeviceModel } from './ModelStatus';
 import { extractWithProgress, type SectionProgress } from './pipeline';
@@ -66,7 +66,7 @@ export function App() {
   const cloudOnly = model.availability !== 'available' && model.availability !== 'checking';
 
   useEffect(() => {
-    document.title = APP_NAME;
+    document.title = IN_PRAMANA ? `${APP_NAME} · Pramana` : APP_NAME;
     if (theme === 'system') delete document.documentElement.dataset.theme;
     else document.documentElement.dataset.theme = theme;
     saveTheme(theme);
@@ -131,7 +131,7 @@ export function App() {
   return <>
     <a className="skip-link" href="#main">Skip to content</a>
     <header className="site-header"><div className="header-inner">
-      <button className="brand" onClick={() => setScreen('home')} disabled={busy}>{APP_NAME}</button>
+      <div className="brand-row">{IN_PRAMANA && <><a className="host-brand" href="/" aria-label="Pramana home"><span className="host-mark" aria-hidden="true">P</span>Pramana</a><span className="host-sep" aria-hidden="true">/</span></>}<button className="brand" onClick={() => setScreen('home')} disabled={busy}>{APP_NAME}</button></div>
       <div className="header-actions"><ModelStatus model={model} /><button className="nav-button" disabled={busy} onClick={() => { setScreen('home'); setTimeout(() => document.getElementById('my-courses')?.scrollIntoView(), 0); }}>My courses{courses.length > 0 && <span className="course-count">{courses.length}</span>}</button>
         <label className="theme-control"><Icon name={theme === 'dark' ? 'moon' : 'sun'} size={18} /><span className="sr-only">Colour theme</span><select aria-label="Colour theme" value={theme} onChange={(e) => setTheme(e.target.value as Theme)}><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></label>
       </div>

@@ -2,7 +2,7 @@
 
 **Your syllabus, checked on your device.** A syllabus can run 15 pages, with the weights and dates that decide your grade buried among the policies. Drop in a course syllabus and get its grading weights and every exam and deadline as a plan you can trust. The AI on your device reads it, deterministic checks verify every number against the page, and only a section that fails a check is sent to Gemini in the cloud.
 
-- **Try it (no login):** https://buildhybridai-term.web.app
+- **Try it (no login):** https://pramana.yingzhilu.cn/term/ (a feature of Pramana, our AI study assistant; mirror: https://buildhybridai-term.web.app)
 - **Platforms:** Web (Chrome, Gemini Nano) and iOS (Apple Foundation Models), both through Firebase AI Logic
 - **Code:** https://github.com/yy5652-hash/syllabus-term
 - **Video (2:00):** https://youtu.be/hDIkXo_nOuA
